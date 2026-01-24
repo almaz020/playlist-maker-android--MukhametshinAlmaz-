@@ -2,6 +2,7 @@ package com.almaz.playlist_maker
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +28,8 @@ fun PanelHeader(
     modifier: Modifier = Modifier,
     title: String,
     isButtonEnabled: Boolean = false,
-    textColor: Color = colorResource(R.color.black)
+    textColor: Color = colorResource(R.color.black),
+    onBack: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -51,6 +53,9 @@ fun PanelHeader(
                             start = 16.dp,
                             bottom = 16.dp,
                             end = 28.dp
+                        )
+                        .clickable(
+                            onClick = onBack
                         ),
                     painter = painterResource(R.drawable.arrow_back),
                     contentDescription = null,
