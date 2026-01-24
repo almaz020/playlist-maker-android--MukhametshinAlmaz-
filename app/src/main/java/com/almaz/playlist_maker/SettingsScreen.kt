@@ -1,7 +1,8 @@
 package com.almaz.playlist_maker
 
 import android.annotation.SuppressLint
-import android.graphics.Paint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -9,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -30,33 +33,17 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
-class SettingsActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.R)
-    @SuppressLint("WrongConstant")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val controller = WindowCompat.getInsetsController(window, window.decorView)
-        controller.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        controller.hide(
-            WindowInsets.Type.systemBars() or
-                    WindowInsets.Type.navigationBars()
-        )
-        setContent {
-            SettingsActivityScreen()
-        }
-    }
-}
 
 @Composable
-fun SettingsActivityScreen(
-    modifier: Modifier = Modifier
+fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit = {}
 ) {
     Column {
         PanelHeader(
             title = stringResource(R.string.app_settings),
-            isButtonEnabled = true
+            isButtonEnabled = true,
+            onBack = onBack
         )
         SettingsMenu(
             modifier = Modifier
@@ -73,6 +60,11 @@ fun SettingsActivityScreen(
 fun SettingsMenu(
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val shareText = stringResource(R.string.share_app)
+    val writeToSupportText = stringResource(R.string.write_to_support)
+    val userAgreementText = stringResource(R.string.user_agreement)
+    val userAgreementLink = stringResource(R.string.user_agreement_link)
     Box(
         modifier = modifier,
     ) {
@@ -91,36 +83,62 @@ fun SettingsMenu(
                     )
             )
             SettingsMenuRow(
-                text = stringResource(R.string.share_app),
+                text = shareText,
                 painter = painterResource(R.drawable.share),
                 modifier = Modifier
                     .padding(
                         top = 22.dp,
                         end = 16.dp,
                         bottom = 21.dp,
+                    ),
+                onClick =  {
+                    val message = "Смотри какое крутое приложение!"
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, message)
+                    }
+                    context.startActivity(
+                        Intent.createChooser(shareIntent, shareText)
                     )
+                }
             )
             SettingsMenuRow(
-                text = stringResource(R.string.write_to_support),
+                text = writeToSupportText,
                 painter = painterResource(R.drawable.support),
                 modifier = Modifier
                     .padding(
                         top = 22.dp,
                         end = 14.dp,
                         bottom = 21.dp,
-                    )
+                    ),
+                onClick = {
+                    val message = "Спасибо разработчикам и разработчицам за крутое приложение!"
+                    val title = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+                    val sendToDevIntent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf("almazz2f@ya.ru"))
+                        putExtra(Intent.EXTRA_TEXT, message)
+                        putExtra(Intent.EXTRA_SUBJECT, title)
+                    }
+                    context.startActivity(Intent.createChooser(sendToDevIntent, writeToSupportText))
+                }
             )
             SettingsMenuRow(
-                text = stringResource(R.string.user_agreement),
+                text = userAgreementText,
                 painter = painterResource(R.drawable.arrow),
                 modifier = Modifier
                     .padding(
                         top = 24.dp,
                         end = 20.dp,
                         bottom = 23.dp,
+                    ),
+                onClick = {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userAgreementLink))
+                    context.startActivity(
+                        Intent.createChooser(browserIntent, userAgreementText)
                     )
+                }
             )
-
         }
     }
 }
@@ -130,8 +148,12 @@ fun SettingsMenuRow(
     modifier: Modifier = Modifier,
     text: String,
     painter: Painter,
+    onClick: () -> Unit = {},
 ) {
     Row(
+        modifier = Modifier.clickable(
+            onClick = onClick
+        ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -160,5 +182,5 @@ fun SettingsMenuRow(
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewSettingsActivityScreen() {
-    SettingsActivityScreen()
+    SettingsScreen()
 }
