@@ -1,4 +1,4 @@
-package com.almaz.playlist_maker
+package com.almaz.playlistmaker
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
