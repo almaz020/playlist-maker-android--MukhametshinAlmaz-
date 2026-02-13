@@ -1,4 +1,4 @@
-package com.almaz.playlist_maker
+package com.almaz.playlistmaker
 
 import org.junit.Test
 

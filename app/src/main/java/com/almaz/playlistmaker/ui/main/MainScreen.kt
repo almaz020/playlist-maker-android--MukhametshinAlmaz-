@@ -1,6 +1,5 @@
-package com.almaz.playlist_maker
+package com.almaz.playlistmaker.ui.main
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,9 +26,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.almaz.playlistmaker.ui.PanelHeader
+import com.almaz.playlistmaker.R
 
 
-    @Composable
+@Composable
     fun MainScreen(
         modifier: Modifier = Modifier,
         onGoToSearch: () -> Unit = {},

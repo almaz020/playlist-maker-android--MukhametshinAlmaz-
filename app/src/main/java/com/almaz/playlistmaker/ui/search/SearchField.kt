@@ -1,4 +1,4 @@
-package com.almaz.playlist_maker
+package com.almaz.playlistmaker.ui.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,10 +25,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.almaz.playlistmaker.R
+import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 
 @Composable
 fun SearchField(
@@ -46,7 +47,8 @@ fun SearchField(
             tint = colorResource(R.color.light_gray_for_search_field))
     },
     placeholderText: String = "Поиск",
-    fontSize: TextUnit = 16.sp
+    fontSize: TextUnit = 16.sp,
+    viewModel: SearchViewModel,
 ) {
     var text by rememberSaveable { mutableStateOf("") }
 
@@ -67,6 +69,8 @@ fun SearchField(
         value = text,
         onValueChange = {
             text = it
+            viewModel.search(text)
+
         },
         singleLine = true,
         cursorBrush = SolidColor(colorResource(R.color.blue_for_search_cursor)),
@@ -127,8 +131,4 @@ fun SearchField(
         }
     )
 }
-@Preview(showSystemUi = true)
-@Composable
-fun Preview() {
-    SearchField()
-}
+

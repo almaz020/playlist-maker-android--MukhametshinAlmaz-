@@ -1,4 +1,4 @@
-package com.almaz.playlist_maker.ui.theme
+package com.almaz.playlistmaker.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
