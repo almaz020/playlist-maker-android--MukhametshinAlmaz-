@@ -11,5 +11,6 @@
     <color name="light_gray">#E6E8EB</color>
     <color name="light_gray_for_search_field">#AEAFB4</color>
     <color name="blue_for_search_cursor">#3F8AE0</color>
+    <color name="floating_button_container">#1A1B2240</color>
 </resources>
 
