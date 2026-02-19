@@ -8,9 +8,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.rememberNavController
+import com.almaz.playlistmaker.FloatingButtonScreen
 import com.almaz.playlistmaker.ui.PlaylistHost
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 
