@@ -1,6 +1,7 @@
 package com.almaz.playlistmaker.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,10 @@ import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
 
 @Composable
-fun TrackListItem(track: Track) {
+fun TrackListItem(
+    track: Track,
+
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
