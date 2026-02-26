@@ -11,32 +11,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.R
+
 import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 
@@ -44,13 +54,13 @@ import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
-
     viewModel: SearchViewModel = viewModel(factory = SearchViewModel.getViewModelFactory())
 ) {
 
     val screenState by viewModel.searchScreenState.collectAsState()
 
-    var text by rememberSaveable { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
+
 
     Column {
         PanelHeader(
@@ -77,7 +87,6 @@ fun SearchScreen(
             onValueChange = {
                 text = it
                 viewModel.search(text)
-
             },
             singleLine = true,
             cursorBrush = SolidColor(colorResource(R.color.blue_for_search_cursor)),
@@ -87,6 +96,7 @@ fun SearchScreen(
                 fontFamily = FontFamily(
                     Font(R.font.yandexsanstextregular))
             ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             decorationBox = { innerTextField ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -126,7 +136,10 @@ fun SearchScreen(
                                     bottom = 12.dp
                                 )
                                 .clickable(
-                                    onClick = { text = "" }
+                                    onClick = {
+                                        text = ""
+
+                                    }
                                 ),
                             painter = painterResource(R.drawable.clear_search_field),
                             contentDescription = null,
@@ -134,39 +147,84 @@ fun SearchScreen(
                         )
                     }
                 }
+
             }
         )
 
+
+
         when (screenState) {
             is SearchState.Initial -> {
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Введите строку для поиска")
+                if (text.isEmpty()) {
+                    Box(
+                        modifier = modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(stringResource(R.string.search))
+                    }
+                } else {
+                    Box(
+                        modifier = modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
 
             is SearchState.Searching -> {
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     CircularProgressIndicator()
                 }
             }
 
             is SearchState.Success -> {
                 val tracks = (screenState as SearchState.Success).list
-                LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(top = 16.dp)
-                ) {
-                    items(tracks.size) { index ->
-                        TrackListItem(track = tracks[index])
+                if (tracks.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            stringResource(R.string.no_songs_found),
+                            color = Color.Red
+                        )
                     }
                 }
+                else {
+                    LazyColumn(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(top = 16.dp)
+                    ) {
+                        items(tracks.size) { index ->
+                            TrackListItem(track = tracks[index])
+                        }
+                    }
+                }
+
             }
 
             is SearchState.Fail -> {
                 val error = (screenState as SearchState.Fail).error
-                Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Ошибка: $error", color = Color.Red)
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            stringResource(R.string.error),
+                            color = Color.Red
+                        )
+                        Text(
+                            error,
+                            color = Color.Red,
+                            fontSize = 12.sp
+                        )
+                    }
                 }
             }
         }
