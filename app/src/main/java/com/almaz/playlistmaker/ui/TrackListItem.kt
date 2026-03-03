@@ -114,7 +114,15 @@ fun TrackListItem(
 @Composable
 @Preview(showSystemUi = true)
 fun PreviewTrackListItem() {
-    val track = Track("Песня", "Музыка", "1000")
+    val track = Track(
+        id = 1,
+        trackName = "Владивосток 2000",
+        artistName = "Мумий Троль",
+        trackTime = "2:38",
+        image = "",
+        favorite = false,
+        playlistId = 0
+    )
     TrackListItem(track, {})
 
 }

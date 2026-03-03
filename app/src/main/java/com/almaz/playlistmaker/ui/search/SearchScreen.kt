@@ -48,6 +48,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.R
+import com.almaz.playlistmaker.data.Word
+import com.almaz.playlistmaker.ui.HistoryRequests
 
 import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
@@ -56,12 +58,37 @@ import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
-    viewModel: SearchViewModel = viewModel(factory = SearchViewModel.getViewModelFactory())
 ) {
+    val searchViewModel: SearchViewModel = viewModel()
     val context = LocalContext.current
-    val screenState by viewModel.searchScreenState.collectAsState()
+
+    val screenState by searchViewModel.searchScreenState.collectAsState()
 
     var text by remember { mutableStateOf("") }
+    var isFocused by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(text) {
+        searchViewModel.updateQuery(text)
+    }
+
+    LaunchedEffect(screenState) {
+        when (screenState) {
+            is SearchState.Success -> {
+                focusManager.clearFocus()
+            }
+            else -> Unit
+        }
+    }
+    var historyList by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        searchViewModel.getHistoryList().collect { list ->
+            historyList = list
+        }
+    }
+
 
 
     Column {
@@ -84,11 +111,15 @@ fun SearchScreen(
                 .background(
                     color = colorResource(R.color.light_gray),
                 )
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .onFocusChanged { focusState ->
+                    isFocused = focusState.isFocused
+                },
             value = text,
-            onValueChange = {
-                text = it
-                viewModel.search(text)
+            onValueChange = { newText ->
+                text = newText
+
             },
             singleLine = true,
             cursorBrush = SolidColor(colorResource(R.color.blue_for_search_cursor)),
@@ -140,7 +171,7 @@ fun SearchScreen(
                                 .clickable(
                                     onClick = {
                                         text = ""
-
+                                        searchViewModel.clearSearch()
                                     }
                                 ),
                             painter = painterResource(R.drawable.clear_search_field),
@@ -152,6 +183,14 @@ fun SearchScreen(
 
             }
         )
+        if (isFocused && text.isEmpty() && historyList.isNotEmpty()) {
+            HistoryRequests(
+                historyList = historyList,
+                onClick = { word ->
+                    text = word
+                }
+            )
+        }
 
 
         when (screenState) {
