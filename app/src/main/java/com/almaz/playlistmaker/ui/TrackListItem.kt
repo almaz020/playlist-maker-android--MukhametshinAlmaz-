@@ -26,11 +26,11 @@ import com.almaz.playlistmaker.data.network.Track
 @Composable
 fun TrackListItem(
     track: Track,
-
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
@@ -55,7 +55,7 @@ fun TrackListItem(
                 overflow = TextOverflow.Ellipsis,
             )
             Row(
-
+                modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -109,6 +109,6 @@ fun TrackListItem(
 @Preview(showSystemUi = true)
 fun PreviewTrackListItem() {
     val track = Track("Песня", "Музыка", "1000")
-    TrackListItem(track)
+    TrackListItem(track) {}
 
 }
