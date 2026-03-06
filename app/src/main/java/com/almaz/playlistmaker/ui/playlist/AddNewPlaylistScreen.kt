@@ -1,5 +1,6 @@
 package com.almaz.playlistmaker.ui.playlist
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,7 +45,9 @@ import org.w3c.dom.Text
 @Composable
 fun AddNewPlaylistScreen(
     onBack: () -> Unit,
+    onCreateClicked: (String, String) -> Unit,
 ) {
+    val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
@@ -84,7 +88,11 @@ fun AddNewPlaylistScreen(
                 unfocusedLabelColor = Color.Black,
                 cursorColor = colorResource(R.color.blue),
             ),
-            label = { Text(text = stringResource(R.string.name)) }
+            label = { Text(text = stringResource(R.string.name), fontFamily = FontFamily(Font(R.font.yandexsanstextregular))) },
+            textStyle = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.yandexsanstextregular))
+            )
         )
         OutlinedTextField(
             modifier = Modifier
@@ -102,7 +110,11 @@ fun AddNewPlaylistScreen(
                 unfocusedLabelColor = Color.Black,
                 cursorColor = colorResource(R.color.blue),
             ),
-            label = { Text(text = stringResource(R.string.description)) }
+            label = { Text(text = stringResource(R.string.description), fontFamily = FontFamily(Font(R.font.yandexsanstextregular))) },
+            textStyle = TextStyle(
+                fontSize = 16.sp,
+                fontFamily = FontFamily(Font(R.font.yandexsanstextregular))
+            )
         )
         Button(
             modifier = Modifier
@@ -110,7 +122,12 @@ fun AddNewPlaylistScreen(
                 .padding(top = 170.dp, start = 17.dp, end = 17.dp, bottom = 32.dp)
                 .height(44.dp)
                 ,
-            onClick = {},
+            onClick = {
+                onCreateClicked(name, description)
+                name = ""
+                description = ""
+                Toast.makeText(context, "Плейлист успешно создан", Toast.LENGTH_SHORT).show()
+                      },
             colors = ButtonDefaults.buttonColors(
                 containerColor = if(!isFormsEmpty) colorResource(R.color.light_gray_for_search_field) else Color.Blue,
                 contentColor = Color.White
@@ -122,10 +139,4 @@ fun AddNewPlaylistScreen(
             )
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewScreen() {
-    AddNewPlaylistScreen {  }
 }

@@ -72,7 +72,8 @@ fun PlaylistHost(navController: NavHostController) {
         }
         composable(PlaylistScreen.NewPlaylist.name) {
             AddNewPlaylistScreen (
-                onBack = { navigateBack() }
+                onBack = { navigateBack() },
+                onCreateClicked = { name, description -> playlistsViewModel.createNewPlayList(name, description) }
             )
         }
     }
