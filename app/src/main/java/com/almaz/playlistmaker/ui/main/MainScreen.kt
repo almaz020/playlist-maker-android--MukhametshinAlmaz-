@@ -34,7 +34,9 @@ import com.almaz.playlistmaker.R
     fun MainScreen(
         modifier: Modifier = Modifier,
         onGoToSearch: () -> Unit = {},
-        onGoToSettings: () -> Unit = {}
+        onGoToSettings: () -> Unit = {},
+        onGoToPlaylists: () -> Unit = {},
+        onGoToFavorites: () -> Unit = {},
     ) {
         Column(
             modifier = modifier
@@ -60,7 +62,9 @@ import com.almaz.playlistmaker.R
                     )
                     .background(colorResource(R.color.white)),
                 onGoToSearch = onGoToSearch,
-                onGoToSettings = onGoToSettings
+                onGoToSettings = onGoToSettings,
+                onGoToPlaylists = onGoToPlaylists,
+                onGoToFavorites = onGoToFavorites,
             )
         }
     }
@@ -70,7 +74,9 @@ import com.almaz.playlistmaker.R
     fun MainMenu(
         modifier: Modifier = Modifier,
         onGoToSearch: () -> Unit = {},
-        onGoToSettings: () -> Unit = {}
+        onGoToSettings: () -> Unit = {},
+        onGoToPlaylists: () -> Unit = {},
+        onGoToFavorites: () -> Unit = {},
     ) {
         val context = LocalContext.current
 
@@ -94,12 +100,12 @@ import com.almaz.playlistmaker.R
                 MenuRow(
                     painter = painterResource(R.drawable.playlists),
                     text = stringResource(R.string.playlists),
-                    onClick = { Toast.makeText(context, "Нажата кнопка Плейлисты", Toast.LENGTH_LONG).show() }
+                    onClick = onGoToPlaylists
                 )
                 MenuRow(
                     painter = painterResource(R.drawable.favourite),
                     text = stringResource(R.string.favourite),
-                    onClick = { Toast.makeText(context, "Нажата кнопка Избранное", Toast.LENGTH_LONG).show() }
+                    onClick = onGoToFavorites
                 )
                 MenuRow(
                     painter = painterResource(R.drawable.settings),

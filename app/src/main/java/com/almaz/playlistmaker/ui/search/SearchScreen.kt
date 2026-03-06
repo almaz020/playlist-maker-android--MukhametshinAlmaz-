@@ -52,14 +52,15 @@ import com.almaz.playlistmaker.data.Word
 import com.almaz.playlistmaker.ui.HistoryRequests
 
 import com.almaz.playlistmaker.ui.TrackListItem
+import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
+    searchViewModel: SearchViewModel
 ) {
-    val searchViewModel: SearchViewModel = viewModel()
     val context = LocalContext.current
 
     val screenState by searchViewModel.searchScreenState.collectAsState()

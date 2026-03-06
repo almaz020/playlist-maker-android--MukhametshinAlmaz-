@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 class SearchViewModel() : ViewModel() {
-    private val tracksRepository = TracksRepositoryImpl()
+    private val tracksRepository = TracksRepositoryImpl(viewModelScope)
     private val searchHistoryRepository = SearchHistoryRepositoryImpl(scope = viewModelScope)
     private val _searchQuery = MutableStateFlow("")
     private val _searchScreenState = MutableStateFlow<SearchState>(SearchState.Initial)

@@ -11,6 +11,7 @@
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/ru/</string>
     <string name="no_songs_found">Не найдено треков</string>
     <string name="error">Ошибка</string>
+    <string name="add_playlist">Добавить плейлист</string>
 
 </resources>
 
