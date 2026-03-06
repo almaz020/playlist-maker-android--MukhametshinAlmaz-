@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.R
+import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 
@@ -46,24 +47,12 @@ fun PlaylistsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 8.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray.copy(alpha = 0.7f)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clickable { onBack() },
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.search)
-                )
-                Text("Playlists", fontSize = 32.sp)
-            }
-
+            PanelHeader(
+                title = stringResource(R.string.playlists),
+                isButtonEnabled = true,
+                onBack = onBack
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

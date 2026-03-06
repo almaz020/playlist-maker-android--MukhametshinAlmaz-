@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.R
+import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.ui.playlist.PlaylistListItem
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 
@@ -36,34 +37,16 @@ import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 fun FavoritesScreen(
     onBack: () -> Unit,
 ) {
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 8.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray.copy(alpha = 0.7f)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clickable { onBack() },
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.search)
-                )
-                Text("Favorites", fontSize = 32.sp)
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, start = 8.dp, end = 8.dp),
-            ) {}
+            PanelHeader(
+                title = stringResource(R.string.favourite),
+                isButtonEnabled = true,
+                onBack = onBack
+            )
         }
     }
 }
