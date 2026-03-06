@@ -8,4 +8,6 @@ enum class PlaylistScreen(val route: String) {
 
     Favorites("favorites_screen"),
 
+    NewPlaylist("newPlaylist_screen"),
+
 }

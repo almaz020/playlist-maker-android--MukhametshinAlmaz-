@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.almaz.playlistmaker.ui.favorites.FavoritesScreen
 import com.almaz.playlistmaker.ui.main.MainScreen
+import com.almaz.playlistmaker.ui.playlist.AddNewPlaylistScreen
 import com.almaz.playlistmaker.ui.playlist.PlaylistScreen
 import com.almaz.playlistmaker.ui.playlist.PlaylistsScreen
 import com.almaz.playlistmaker.ui.search.SearchScreen
@@ -59,12 +60,18 @@ fun PlaylistHost(navController: NavHostController) {
         composable(PlaylistScreen.Playlists.name) {
             PlaylistsScreen (
                 onBack = { navigateBack() },
-                playlistsViewModel = playlistsViewModel
+                playlistsViewModel = playlistsViewModel,
+                addNewPlaylist = { navigateTo(PlaylistScreen.NewPlaylist) },
             )
         }
 
         composable(PlaylistScreen.Favorites.name) {
             FavoritesScreen (
+                onBack = { navigateBack() }
+            )
+        }
+        composable(PlaylistScreen.NewPlaylist.name) {
+            AddNewPlaylistScreen (
                 onBack = { navigateBack() }
             )
         }
