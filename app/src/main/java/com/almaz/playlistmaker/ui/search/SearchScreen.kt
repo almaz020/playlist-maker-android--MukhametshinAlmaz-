@@ -106,8 +106,12 @@ fun SearchScreen(
                     start = 16.dp,
                     end = 16.dp,
                 )
-                .clip(
-                    shape = RoundedCornerShape(8.dp)
+                .then(
+                    if (isFocused && text.isEmpty() && historyList.isNotEmpty()) {
+                        Modifier.clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    } else {
+                        Modifier.clip(RoundedCornerShape(8.dp))
+                    }
                 )
                 .background(
                     color = colorResource(R.color.light_gray),
