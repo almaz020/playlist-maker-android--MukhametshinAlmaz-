@@ -1,10 +1,19 @@
 package com.almaz.playlistmaker.ui
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.favorites.FavoritesScreen
 import com.almaz.playlistmaker.ui.main.MainScreen
 import com.almaz.playlistmaker.ui.playlist.AddNewPlaylistScreen
@@ -47,7 +56,14 @@ fun PlaylistHost(navController: NavHostController) {
         composable(PlaylistScreen.Search.name) {
             SearchScreen(
                 onBack = { navigateBack() },
-                searchViewModel = searchViewModel
+                searchViewModel = searchViewModel,
+                goToTrackDetailsScreen = { track ->
+                    navController.currentBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("track", track)
+
+                    navController.navigate(PlaylistScreen.TrackDetailsScreen.name)
+                }
             )
         }
 
@@ -75,6 +91,16 @@ fun PlaylistHost(navController: NavHostController) {
                 onBack = { navigateBack() },
                 onCreateClicked = { name, description -> playlistsViewModel.createNewPlayList(name, description) }
             )
+        }
+
+        composable(PlaylistScreen.TrackDetailsScreen.name) {
+            val track = navController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.get<Track>("track")
+
+            if (track != null) {
+                TrackDetailsScreen(track = track, onBack = { navController.popBackStack() })
+            }
         }
     }
 }

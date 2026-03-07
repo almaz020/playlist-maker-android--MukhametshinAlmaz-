@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -29,7 +30,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FloatingButtonScreen(
-    modifier: Modifier,
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     Box(
@@ -39,9 +39,7 @@ fun FloatingButtonScreen(
             containerColor = Color.Transparent,
             contentColor = Color.Unspecified,
             shape = CircleShape,
-            modifier = Modifier
-                .padding(end = 17.dp, bottom = 30.dp)
-                .align(Alignment.BottomEnd),
+            modifier = Modifier.padding(32.dp).align(Alignment.BottomEnd),
             onClick =  {  showBottomSheet = true },
             elevation = FloatingActionButtonDefaults.elevation(0.dp)
         )
@@ -58,4 +56,9 @@ fun FloatingButtonScreen(
             content = "Плейлист"
         )
     }
+}
+@Composable
+@Preview(showBackground = true) 
+fun Prev() {
+    FloatingButtonScreen()
 }

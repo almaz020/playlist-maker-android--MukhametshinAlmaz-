@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
@@ -25,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -73,13 +75,14 @@ fun PlaylistsScreen(
                 .padding(32.dp)
                 .align(Alignment.BottomEnd),
             onClick = { addNewPlaylist() },
-            containerColor = Color.Gray,
-            contentColor = Color.White,
-            shape = CircleShape
+            containerColor = Color.Transparent,
+            contentColor = Color.Unspecified,
+            shape = CircleShape,
+            elevation = FloatingActionButtonDefaults.elevation(0.dp)
         ) {
             Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = stringResource(R.string.add_playlist)
+                painter = painterResource(R.drawable.floating_button),
+                contentDescription = null,
             )
         }
     }

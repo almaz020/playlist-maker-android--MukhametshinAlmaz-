@@ -49,7 +49,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.Word
+import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.HistoryRequests
+import com.almaz.playlistmaker.ui.TrackDetailsScreen
 
 import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
@@ -59,7 +61,8 @@ import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onBack: () -> Unit = {},
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    goToTrackDetailsScreen: (Track) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -248,12 +251,11 @@ fun SearchScreen(
                         items(tracks.size) { index ->
                             TrackListItem(
                                 track = tracks[index],
-                                onClick = { Toast.makeText(context, "Нажат трек ${tracks[index].trackName}", Toast.LENGTH_SHORT).show() }
+                                onClick = { goToTrackDetailsScreen(tracks[index]) }
                             )
                         }
                     }
                 }
-
             }
 
             is SearchState.Fail -> {

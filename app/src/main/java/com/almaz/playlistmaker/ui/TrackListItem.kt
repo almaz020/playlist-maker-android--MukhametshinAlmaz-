@@ -27,14 +27,14 @@ import com.almaz.playlistmaker.data.network.Track
 @Composable
 fun TrackListItem(
     track: Track,
-    onClick: () -> Unit,
+    onClick: (Track) -> Unit,
     onLongClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { onClick() },
+                onClick = { onClick(track) },
                 onLongClick = { onLongClick?.invoke() }
             ),
         verticalAlignment = Alignment.CenterVertically,

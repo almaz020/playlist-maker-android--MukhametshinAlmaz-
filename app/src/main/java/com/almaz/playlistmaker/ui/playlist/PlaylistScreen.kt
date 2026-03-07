@@ -10,4 +10,6 @@ enum class PlaylistScreen(val route: String) {
 
     NewPlaylist("newPlaylist_screen"),
 
+    TrackDetailsScreen("trackDetailsScreen")
+
 }
