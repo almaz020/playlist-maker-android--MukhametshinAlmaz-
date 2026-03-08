@@ -34,19 +34,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.almaz.playlistmaker.PlaylistBottomSheet
 
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
+import com.almaz.playlistmaker.ui.view_model.PlaylistsModalBottomViewModel
+import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
 
 @Composable
 fun TrackDetailsScreen(
     onBack: () -> Unit = {},
     trackSource: Track,
-    trackDetailsViewModel: TrackDetailsViewModel
+    trackDetailsViewModel: TrackDetailsViewModel,
+    playlistsViewModel: PlaylistsViewModel,
 ) {
-
     val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
+    var isShowSheet by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -84,7 +88,7 @@ fun TrackDetailsScreen(
                 containerColor = Color.Transparent,
                 contentColor = Color.Unspecified,
                 shape = CircleShape,
-                onClick =  {   },
+                onClick =  { isShowSheet = true  },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             )
             {
@@ -110,6 +114,12 @@ fun TrackDetailsScreen(
                     tint = if (track?.favorite ?: false) Color.Red else Color.Unspecified
                 )
             }
+            PlaylistBottomSheet(
+                isShowPanel = isShowSheet,
+                onDismissRequest = { isShowSheet = false },
+                playlistsViewModel = playlistsViewModel,
+                track = track
+            )
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 24.dp),

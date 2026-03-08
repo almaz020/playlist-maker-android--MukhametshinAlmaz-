@@ -168,9 +168,11 @@ class DatabaseMock(val scope: CoroutineScope) {
                 tracks.find { it.trackName == track.trackName && it.artistName == track.artistName }
             }
 
-    fun insertTrack(track: Track) {
-        tracks.removeIf { it.id == track.id }
-        tracks.add(track)
+    fun insertTrack(track: Track?) {
+        tracks.removeIf { it.id == track?.id }
+        if (track != null) {
+            tracks.add(track)
+        }
 
         scope.launch {
             _tracksUpdates.emit(Unit)

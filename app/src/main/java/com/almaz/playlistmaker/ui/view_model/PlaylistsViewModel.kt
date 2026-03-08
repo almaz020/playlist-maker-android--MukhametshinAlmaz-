@@ -37,8 +37,10 @@ class PlaylistsViewModel() : ViewModel() {
         }
     }
 
-    suspend fun insertTrackToPlaylist(track: Track, playlistId: Long) {
-        tracksRepository.insertTrackToPlaylist(track, playlistId)
+    fun insertTrackToPlaylist(track: Track?, playlistId: Long) {
+        viewModelScope.launch {
+            tracksRepository.insertTrackToPlaylist(track, playlistId)
+        }
     }
 
     suspend fun toggleFavorite(track: Track, isFavorite: Boolean) {

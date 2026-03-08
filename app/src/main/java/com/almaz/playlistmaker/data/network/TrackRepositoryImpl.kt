@@ -24,8 +24,8 @@ class TracksRepositoryImpl(
         return database.getTrackByNameAndArtist(track)
     }
 
-    override suspend fun insertTrackToPlaylist(track: Track, playlistId: Long) {
-        database.insertTrack(track.copy(playlistId = playlistId))
+    override suspend fun insertTrackToPlaylist(track: Track?, playlistId: Long) {
+        database.insertTrack(track?.copy(playlistId = playlistId))
     }
 
     override suspend fun deleteTrackFromPlaylist(track: Track) {
