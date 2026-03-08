@@ -34,13 +34,14 @@ import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.playlist.PlaylistListItem
 import com.almaz.playlistmaker.ui.view_model.FavoritesScreenViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
+import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
 
 @Composable
 fun FavoritesScreen(
     onBack: () -> Unit,
-    viewModel: FavoritesScreenViewModel = viewModel()
+    trackDetailsViewModel : TrackDetailsViewModel,
 ) {
-    val tracks by viewModel.favoriteTracks.collectAsState()
+    val tracks by trackDetailsViewModel.favoriteTracks.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
