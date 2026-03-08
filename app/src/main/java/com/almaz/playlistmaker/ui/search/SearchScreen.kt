@@ -93,8 +93,6 @@ fun SearchScreen(
         }
     }
 
-
-
     Column {
         PanelHeader(
             title = stringResource(R.string.search),

@@ -16,6 +16,12 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,12 +37,17 @@ import androidx.compose.ui.unit.sp
 
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
+import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
 
 @Composable
 fun TrackDetailsScreen(
     onBack: () -> Unit = {},
-    track: Track,
+    trackSource: Track,
+    trackDetailsViewModel: TrackDetailsViewModel
 ) {
+
+    val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -52,14 +63,14 @@ fun TrackDetailsScreen(
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 24.dp),
-            text = track.trackName,
+            text = track?.trackName ?: "",
             fontSize = 22.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 12.dp),
-            text = track.artistName,
+            text = track?.trackName ?: "",
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
@@ -87,13 +98,16 @@ fun TrackDetailsScreen(
                 contentColor = Color.Unspecified,
                 shape = CircleShape,
                 modifier = Modifier,
-                onClick =  {   },
+                onClick =  { track?.let {
+                    trackDetailsViewModel.updateTrackFavoriteStatus(it, !it.favorite)
+                } },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             )
             {
                 Icon(
                     painter = painterResource(R.drawable.add_favorite),
                     contentDescription = null,
+                    tint = if (track?.favorite ?: false) Color.Red else Color.Unspecified
                 )
             }
         }
@@ -111,16 +125,10 @@ fun TrackDetailsScreen(
             )
             Text(
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 16.dp),
-                text = track.trackTime,
+                text = track?.trackTime ?: "",
                 fontSize = 13.sp,
                 fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             )
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun TrackDetailsScreenPreview() {
-    TrackDetailsScreen({}, Track(1, "Yesterday (Remastered 2009)", "The Beatles", "3:53", "asdasd", true, 12))
 }

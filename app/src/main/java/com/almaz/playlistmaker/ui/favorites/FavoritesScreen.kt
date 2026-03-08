@@ -30,13 +30,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.ui.PanelHeader
+import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.playlist.PlaylistListItem
+import com.almaz.playlistmaker.ui.view_model.FavoritesScreenViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 
 @Composable
 fun FavoritesScreen(
     onBack: () -> Unit,
+    viewModel: FavoritesScreenViewModel = viewModel()
 ) {
+    val tracks by viewModel.favoriteTracks.collectAsState()
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -47,6 +52,14 @@ fun FavoritesScreen(
                 isButtonEnabled = true,
                 onBack = onBack
             )
+            LazyColumn {
+                items(tracks.size) { index ->
+                    TrackListItem(
+                        track = tracks[index],
+                        onClick = { }
+                    )
+                }
+            }
         }
     }
 }

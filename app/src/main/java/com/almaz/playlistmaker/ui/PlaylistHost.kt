@@ -23,12 +23,14 @@ import com.almaz.playlistmaker.ui.search.SearchScreen
 import com.almaz.playlistmaker.ui.settings.SettingsScreen
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
+import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
 
 @Composable
 fun PlaylistHost(navController: NavHostController) {
 
     val playlistsViewModel: PlaylistsViewModel = viewModel()
     val searchViewModel: SearchViewModel = viewModel()
+    val trackDetailsViewModel: TrackDetailsViewModel = viewModel()
 
     fun navigateTo(screen: PlaylistScreen) {
         navController.navigate(screen.name) {
@@ -99,7 +101,7 @@ fun PlaylistHost(navController: NavHostController) {
                 ?.get<Track>("track")
 
             if (track != null) {
-                TrackDetailsScreen(track = track, onBack = { navController.popBackStack() })
+                TrackDetailsScreen(trackSource = track, onBack = { navController.popBackStack() }, trackDetailsViewModel = trackDetailsViewModel)
             }
         }
     }

@@ -29,8 +29,8 @@ class PlaylistsViewModel() : ViewModel() {
             emit(collectedPlaylists.toList())
         }
     }
-    val favoriteList: Flow<List<Track>> = databaseRepository.getFavoriteTracks()
 
+    val favoriteList: Flow<List<Track>> = databaseRepository.getFavoriteTracks()
     fun createNewPlayList(namePlaylist: String, description: String) {
         viewModelScope.launch(Dispatchers.IO) {
             playlistsRepository.addNewPlaylist(namePlaylist, description)
