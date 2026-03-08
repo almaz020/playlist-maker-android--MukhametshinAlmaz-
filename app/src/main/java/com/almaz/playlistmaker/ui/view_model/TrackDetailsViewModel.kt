@@ -17,7 +17,13 @@ import kotlinx.coroutines.launch
 class TrackDetailsViewModel: ViewModel() {
     private val tracksRepository = TracksRepositoryImpl(viewModelScope)
 
-
+    val favoriteTracks: StateFlow<List<Track>> =
+        tracksRepository.getFavoriteTracks()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
     fun getTrack(track: Track): StateFlow<Track?> =
         tracksRepository.getTrackByNameAndArtist(track)
             .stateIn(
