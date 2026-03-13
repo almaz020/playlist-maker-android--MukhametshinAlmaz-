@@ -1,9 +1,8 @@
 package com.almaz.playlistmaker.data.network
 
 import com.almaz.playlistmaker.data.DatabaseMock
-import com.almaz.playlistmaker.domain.NetworkClient
+import com.almaz.playlistmaker.data.NetworkClient
 import com.almaz.playlistmaker.data.dto.TrackSearchRequest
-import com.almaz.playlistmaker.data.dto.TrackSearchResponse
 import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.CoroutineScope
