@@ -37,28 +37,28 @@ class SearchViewModel() : ViewModel() {
                 }
         }
     }
-
     fun updateQuery(query: String) {
         _searchQuery.value = query
     }
-
-    private fun performSearch(request: String) {
+    fun performSearch(request: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _searchScreenState.update { SearchState.Searching }
-                searchHistoryRepository.addToHistory(Word(word = request).word)
-                val list = tracksRepository.searchTracks(expression = request)
-                _searchScreenState.update { SearchState.Success(list = list) }
+
+                val list = tracksRepository.searchTracks(request)
+
+                _searchScreenState.update { SearchState.Success(list) }
+
             } catch (e: IOException) {
-                _searchScreenState.update { SearchState.Fail(e.message.toString()) }
+                _searchScreenState.update { SearchState.Fail("Нет интернета") }
+
+            } catch (e: Exception) {
+                _searchScreenState.update { SearchState.Fail("Ошибка сервера") }
             }
         }
     }
-
     fun clearSearch() {
         _searchScreenState.update { SearchState.Initial }
     }
-
     suspend fun getHistoryList() = searchHistoryRepository.getHistoryRequests()
-
 }

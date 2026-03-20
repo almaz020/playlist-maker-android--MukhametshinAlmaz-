@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 class TracksRepositoryImpl(
     private val scope: CoroutineScope
@@ -32,28 +33,34 @@ class TracksRepositoryImpl(
         val request = TrackSearchRequest(expression = expression)
         val response: BaseResponse = retrofitNetworkClientImpl.doRequest(dto = request)
 
-        when(response) {
-            is TracksSearchResponse -> return response.results.map {
-                val timeMillis = it.trackTimeMillis
 
-                val totalSeconds = timeMillis / 1000
-                val minutes = totalSeconds / 60
-                val seconds = totalSeconds % 60
+        when(response.resultCode) {
+            200 -> {
+                response as TracksSearchResponse
+                return response.results.map {
+                    val timeMillis = it.trackTimeMillis
 
-                val formattedTime = "%d:%02d".format(minutes, seconds)
-                Track(
-                    id = it.id,
-                    trackName = it.trackName,
-                    artistName = it.artistName,
-                    trackTime = formattedTime,
-                    image = it.image,
-                    favorite = false,
-                    playlistId = 0
-                )
+                    val totalSeconds = timeMillis / 1000
+                    val minutes = totalSeconds / 60
+                    val seconds = totalSeconds % 60
+
+                    val formattedTime = "%d:%02d".format(minutes, seconds)
+                    Track(
+                        id = it.id,
+                        trackName = it.trackName,
+                        artistName = it.artistName,
+                        trackTime = formattedTime,
+                        image = it.image,
+                        favorite = false,
+                        playlistId = 0
+                    )
+                }
             }
-            else -> {
-                return emptyList()
-            }
+            -1 -> throw IOException("Нет интернета")
+
+            -2 -> throw RuntimeException("Ошибка сервера")
+
+            else -> throw RuntimeException(response.errorMessage ?: "Ошибка")
         }
     }
 

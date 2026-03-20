@@ -11,16 +11,22 @@ class RetrofitNetworkClient(private val api: ITunesApiService) : NetworkClient {
     override suspend fun doRequest(dto: Any): BaseResponse {
         return try {
             when (dto) {
-                is TrackSearchRequest -> api.searchTracks(
-                    query = dto.expression,
-                    media = "music",
-                    entity = "song",
-                    limit = 10
-                )
+                is TrackSearchRequest -> {
+                    val response = api.searchTracks(
+                        query = dto.expression,
+                        media = "music",
+                        entity = "song",
+                        limit = 10
+                    )
+
+                    response.apply {
+                        resultCode = 200
+                    }
+                }
 
                 else -> BaseResponse().apply {
                     resultCode = 400
-                    errorMessage = "Invalid request type: expected TracksSearchRequest or String"
+                    errorMessage = "Invalid request type"
                 }
             }
         } catch (e: IOException) {

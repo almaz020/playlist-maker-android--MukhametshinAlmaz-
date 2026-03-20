@@ -272,6 +272,12 @@ fun SearchScreen(
                             color = Color.Red,
                             fontSize = 12.sp
                         )
+                        Text(
+                            modifier = Modifier.clickable { searchViewModel.performSearch(text) },
+                            text = stringResource(R.string.update),
+                            color = Color.Blue,
+                            fontSize = 12.sp
+                        )
                     }
                 }
             }
