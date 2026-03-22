@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.almaz.playlistmaker.PlaylistBottomSheet
 
 import com.almaz.playlistmaker.R
@@ -60,9 +61,9 @@ fun TrackDetailsScreen(
             isButtonEnabled = true,
             onBack = onBack,
         )
-        Image(
+        AsyncImage(
             modifier = Modifier.fillMaxWidth().height(312.dp).padding(end = 24.dp, start = 24.dp, top = 26.dp),
-            painter = painterResource(R.drawable.ic_music),
+            model = trackSource.image,
             contentDescription = null
         )
         Text(

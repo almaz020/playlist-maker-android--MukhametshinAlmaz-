@@ -50,7 +50,7 @@ class TracksRepositoryImpl(
                         trackName = it.trackName,
                         artistName = it.artistName,
                         trackTime = formattedTime,
-                        image = it.image,
+                        image = it.artworkUrl100,
                         favorite = false,
                         playlistId = 0
                     )

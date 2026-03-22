@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
 
@@ -39,13 +40,20 @@ fun TrackListItem(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .padding(top = 8.dp, start = 13.dp, bottom = 8.dp)
                 .size(45.dp),
-            painter = painterResource(id = R.drawable.ic_music),
-            contentDescription = "Трек ${track.trackName}"
+            model = track.image,
+            contentDescription = null,
         )
+//        Image(
+//            modifier = Modifier
+//                .padding(top = 8.dp, start = 13.dp, bottom = 8.dp)
+//                .size(45.dp),
+//            painter = painterResource(id = R.drawable.ic_music),
+//            contentDescription = "Трек ${track.trackName}"
+//        )
         Column(
             modifier = Modifier
                 .weight(1f)
