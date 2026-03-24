@@ -1,14 +1,6 @@
 package com.almaz.playlistmaker.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,7 +9,7 @@ import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.favorites.FavoritesScreen
 import com.almaz.playlistmaker.ui.main.MainScreen
 import com.almaz.playlistmaker.ui.playlist.AddNewPlaylistScreen
-import com.almaz.playlistmaker.ui.playlist.PlaylistScreen
+import com.almaz.playlistmaker.ui.playlist.PlaylistScreenEnum
 import com.almaz.playlistmaker.ui.playlist.PlaylistsScreen
 import com.almaz.playlistmaker.ui.search.SearchScreen
 import com.almaz.playlistmaker.ui.settings.SettingsScreen
@@ -35,7 +27,7 @@ fun PlaylistHost(navController: NavHostController) {
 
     val playlistsModalBottomViewModel: PlaylistsModalBottomViewModel = viewModel()
 
-    fun navigateTo(screen: PlaylistScreen) {
+    fun navigateTo(screen: PlaylistScreenEnum) {
         navController.navigate(screen.name) {
             launchSingleTop = true
         }
@@ -47,18 +39,18 @@ fun PlaylistHost(navController: NavHostController) {
 
     NavHost(
     navController = navController,
-    startDestination = PlaylistScreen.Main.name
+    startDestination = PlaylistScreenEnum.Main.name
     ) {
-        composable(PlaylistScreen.Main.name) {
+        composable(PlaylistScreenEnum.Main.name) {
             MainScreen(
-                onGoToSearch = { navigateTo(PlaylistScreen.Search) },
-                onGoToSettings = { navigateTo(PlaylistScreen.Settings) },
-                onGoToPlaylists = { navigateTo(PlaylistScreen.Playlists) },
-                onGoToFavorites = { navigateTo(PlaylistScreen.Favorites) },
+                onGoToSearch = { navigateTo(PlaylistScreenEnum.Search) },
+                onGoToSettings = { navigateTo(PlaylistScreenEnum.Settings) },
+                onGoToPlaylists = { navigateTo(PlaylistScreenEnum.Playlists) },
+                onGoToFavorites = { navigateTo(PlaylistScreenEnum.Favorites) },
             )
         }
 
-        composable(PlaylistScreen.Search.name) {
+        composable(PlaylistScreenEnum.Search.name) {
             SearchScreen(
                 onBack = { navigateBack() },
                 searchViewModel = searchViewModel,
@@ -67,39 +59,32 @@ fun PlaylistHost(navController: NavHostController) {
                         ?.savedStateHandle
                         ?.set("track", track)
 
-                    navController.navigate(PlaylistScreen.TrackDetailsScreen.name)
+                    navController.navigate(PlaylistScreenEnum.TrackDetailsScreen.name)
                 }
             )
         }
 
-        composable(PlaylistScreen.Settings.name) {
+        composable(PlaylistScreenEnum.Settings.name) {
             SettingsScreen(
                 onBack = { navigateBack() }
             )
         }
 
-        composable(PlaylistScreen.Playlists.name) {
-            PlaylistsScreen (
-                onBack = { navigateBack() },
-                playlistsViewModel = playlistsViewModel,
-                addNewPlaylist = { navigateTo(PlaylistScreen.NewPlaylist) },
-            )
-        }
 
-        composable(PlaylistScreen.Favorites.name) {
+        composable(PlaylistScreenEnum.Favorites.name) {
             FavoritesScreen (
                 onBack = { navigateBack() },
                 trackDetailsViewModel = trackDetailsViewModel
             )
         }
-        composable(PlaylistScreen.NewPlaylist.name) {
+        composable(PlaylistScreenEnum.NewPlaylist.name) {
             AddNewPlaylistScreen (
                 onBack = { navigateBack() },
                 onCreateClicked = { name, description -> playlistsViewModel.createNewPlayList(name, description) }
             )
         }
 
-        composable(PlaylistScreen.TrackDetailsScreen.name) {
+        composable(PlaylistScreenEnum.TrackDetailsScreen.name) {
             val track = navController.previousBackStackEntry
                 ?.savedStateHandle
                 ?.get<Track>("track")

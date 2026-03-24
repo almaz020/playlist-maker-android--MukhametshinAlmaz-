@@ -1,6 +1,7 @@
 package com.almaz.playlistmaker.ui.search
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -43,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -205,9 +208,7 @@ fun SearchScreen(
                     Box(
                         modifier = modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
-                    ) {
-                        Text(stringResource(R.string.search))
-                    }
+                    ) {}
                 } else {
                     Box(
                         modifier = modifier.fillMaxSize(),
@@ -230,16 +231,26 @@ fun SearchScreen(
             is SearchState.Success -> {
                 val tracks = (screenState as SearchState.Success).list
                 if (tracks.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            stringResource(R.string.no_songs_found),
-                            color = Color.Red
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth().padding(top = 102.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                modifier = Modifier.size(120.dp).fillMaxWidth().padding(bottom = 16.dp),
+                                painter = painterResource(R.drawable.search_no_found),
+                                contentDescription = null,
+                            )
+                            Text(
+                                modifier = Modifier,
+                                text = stringResource(R.string.no_songs_found),
+                                color = Color.Black,
+                                fontSize = 19.sp,
+                                fontFamily = FontFamily(
+                                    Font(R.font.yandexsanstextmedium)
+                                ),
+                            )
+                        }
                     }
-                }
                 else {
                     LazyColumn(
                         modifier = modifier
@@ -258,27 +269,34 @@ fun SearchScreen(
 
             is SearchState.Fail -> {
                 val error = (screenState as SearchState.Fail).error
-                Box(
-                    modifier = modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = 102.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            stringResource(R.string.error),
-                            color = Color.Red
+                    Image(
+                        modifier = Modifier.size(120.dp).fillMaxWidth().padding(bottom = 16.dp),
+                        painter = painterResource(R.drawable.light_mode),
+                        contentDescription = null,
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 24.dp, end = 24.dp),
+                        text = stringResource(R.string.error_searching),
+                        color = Color.Black,
+                        fontSize = 19.sp,
+                        fontFamily = FontFamily(
+                            Font(R.font.yandexsanstextmedium)
+                        ),
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        modifier = Modifier.padding(top = 10.dp).clickable { searchViewModel.performSearch(text) },
+                        text = stringResource(R.string.update),
+                        color = Color.Blue,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily(
+                            Font(R.font.yandexsanstextmedium)
                         )
-                        Text(
-                            error,
-                            color = Color.Red,
-                            fontSize = 12.sp
-                        )
-                        Text(
-                            modifier = Modifier.clickable { searchViewModel.performSearch(text) },
-                            text = stringResource(R.string.update),
-                            color = Color.Blue,
-                            fontSize = 12.sp
-                        )
-                    }
+                    )
                 }
             }
         }

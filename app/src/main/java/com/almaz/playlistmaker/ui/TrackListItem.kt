@@ -46,14 +46,10 @@ fun TrackListItem(
                 .size(45.dp),
             model = track.image,
             contentDescription = null,
+            placeholder = painterResource(R.drawable.ic_music), // пока загружается
+            error = painterResource(R.drawable.ic_music),       // если ошибка загрузки
+            fallback = painterResource(R.drawable.ic_music),
         )
-//        Image(
-//            modifier = Modifier
-//                .padding(top = 8.dp, start = 13.dp, bottom = 8.dp)
-//                .size(45.dp),
-//            painter = painterResource(id = R.drawable.ic_music),
-//            contentDescription = "Трек ${track.trackName}"
-//        )
         Column(
             modifier = Modifier
                 .weight(1f)

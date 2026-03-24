@@ -1,11 +1,17 @@
 package com.almaz.playlistmaker.ui.playlist
 
-enum class PlaylistScreen(val route: String) {
-    Main("main_screen"),
-    Search("search_screen"),
-    Settings("settings_screen"),
-    Playlists("playlists_screen"),
-    Favorites("favorites_screen"),
-    NewPlaylist("newPlaylist_screen"),
-    TrackDetailsScreen("trackDetailsScreen")
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import com.almaz.playlistmaker.ui.view_model.PlaylistViewModel
+
+@Composable
+fun PlaylistScreen(
+    playlistViewModel: PlaylistViewModel,
+    index: Int,
+    onClick: (Int?) -> Unit
+) {
+    val playList = playlistViewModel.playlist.collectAsState(null)
+
+
 }

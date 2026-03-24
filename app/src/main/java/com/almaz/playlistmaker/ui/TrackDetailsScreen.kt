@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -24,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -50,8 +53,11 @@ fun TrackDetailsScreen(
     trackDetailsViewModel: TrackDetailsViewModel,
     playlistsViewModel: PlaylistsViewModel,
 ) {
-    val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
     var isShowSheet by remember { mutableStateOf(false) }
+
+    val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
+
+    val largeArtworkUrl = trackSource.image?.replace("100x100", "600x600")
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -62,20 +68,25 @@ fun TrackDetailsScreen(
             onBack = onBack,
         )
         AsyncImage(
-            modifier = Modifier.fillMaxWidth().height(312.dp).padding(end = 24.dp, start = 24.dp, top = 26.dp),
-            model = trackSource.image,
-            contentDescription = null
+            modifier = Modifier.fillMaxWidth().width(312.dp).padding(end = 24.dp, start = 24.dp, top = 26.dp).clip(
+                RoundedCornerShape(8.dp)
+            ),
+            model = largeArtworkUrl,
+            contentDescription = null,
+            placeholder = painterResource(R.drawable.ic_music), // пока загружается
+            error = painterResource(R.drawable.ic_music),       // если ошибка загрузки
+            fallback = painterResource(R.drawable.ic_music),
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 24.dp),
-            text = track?.trackName ?: "",
+            text = trackSource?.trackName ?: "",
             fontSize = 22.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 12.dp),
-            text = track?.trackName ?: "",
+            text = trackSource?.trackName ?: "",
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
@@ -103,7 +114,7 @@ fun TrackDetailsScreen(
                 contentColor = Color.Unspecified,
                 shape = CircleShape,
                 modifier = Modifier,
-                onClick =  { track?.let {
+                onClick =  { trackSource?.let {
                     trackDetailsViewModel.updateTrackFavoriteStatus(it, !it.favorite)
                 } },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
@@ -119,7 +130,7 @@ fun TrackDetailsScreen(
                 isShowPanel = isShowSheet,
                 onDismissRequest = { isShowSheet = false },
                 playlistsViewModel = playlistsViewModel,
-                track = track
+                track = trackSource
             )
         }
         Row(
@@ -136,7 +147,7 @@ fun TrackDetailsScreen(
             )
             Text(
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 16.dp),
-                text = track?.trackTime ?: "",
+                text = trackSource?.trackTime ?: "",
                 fontSize = 13.sp,
                 fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             )
