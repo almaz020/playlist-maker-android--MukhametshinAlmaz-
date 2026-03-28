@@ -13,11 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 class TracksRepositoryImpl(
-    private val scope: CoroutineScope
+    private val database : DatabaseMock
 ) : TracksRepository {
-    private val database = DatabaseMock(
-        scope = scope
-    )
     private val ITunesBaseUrl: String = " https://itunes.apple.com/"
 
     private val retrofit = Retrofit.Builder()

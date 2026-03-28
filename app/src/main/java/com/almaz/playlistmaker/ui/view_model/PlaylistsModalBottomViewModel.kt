@@ -8,9 +8,9 @@ import com.almaz.playlistmaker.domain.PlaylistsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class PlaylistsModalBottomViewModel : ViewModel() {
-    private val playlistsRepository: PlaylistsRepository =
-        PlaylistsRepositoryImpl(scope = viewModelScope)
+class PlaylistsModalBottomViewModel(
+    private val playlistsRepository : PlaylistsRepository
+) : ViewModel() {
 
     val playlists: Flow<List<Playlist>> = flow {
         val collectedPlaylists = mutableListOf<Playlist>()

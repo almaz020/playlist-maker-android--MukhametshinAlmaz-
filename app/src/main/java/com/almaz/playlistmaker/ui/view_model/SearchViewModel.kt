@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.almaz.playlistmaker.data.SearchHistoryRepositoryImpl
 import com.almaz.playlistmaker.data.Word
 import com.almaz.playlistmaker.data.network.TracksRepositoryImpl
+import com.almaz.playlistmaker.domain.SearchHistoryRepository
 import com.almaz.playlistmaker.domain.TracksRepository
 import com.almaz.playlistmaker.ui.search.SearchState
 import kotlinx.coroutines.Dispatchers
@@ -18,9 +19,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class SearchViewModel : ViewModel() {
-    private val tracksRepository = TracksRepositoryImpl(viewModelScope)
-    private val searchHistoryRepository = SearchHistoryRepositoryImpl(scope = viewModelScope)
+class SearchViewModel(
+    private val tracksRepository: TracksRepository,
+    private val searchHistoryRepository : SearchHistoryRepository
+) : ViewModel() {
+
     private val _searchQuery = MutableStateFlow("")
     private val _searchScreenState = MutableStateFlow<SearchState>(SearchState.Initial)
     val searchScreenState = _searchScreenState.asStateFlow()

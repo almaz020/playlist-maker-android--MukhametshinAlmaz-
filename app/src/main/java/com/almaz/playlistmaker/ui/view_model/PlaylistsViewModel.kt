@@ -15,13 +15,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class PlaylistsViewModel() : ViewModel() {
-    private val playlistsRepository: PlaylistsRepository =
-        PlaylistsRepositoryImpl(scope = viewModelScope)
-    private val tracksRepository: TracksRepository = TracksRepositoryImpl(scope = viewModelScope)
-    // Используем мок базы вместо репозитория
-    private val databaseRepository: DatabaseMock = DatabaseMock(scope = viewModelScope)
+class PlaylistsViewModel(
+    private val playlistsRepository: PlaylistsRepository,
+    private val tracksRepository: TracksRepository,
+    private val databaseRepository : DatabaseMock
 
+) : ViewModel() {
     val playlists: Flow<List<Playlist>> = flow {
         val collectedPlaylists = mutableListOf<Playlist>()
         playlistsRepository.getAllPlaylists().collect { playlist ->

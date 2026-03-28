@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.data.network.TracksRepositoryImpl
+import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,8 +15,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class TrackDetailsViewModel: ViewModel() {
-    private val tracksRepository = TracksRepositoryImpl(viewModelScope)
+class TrackDetailsViewModel(
+    private val tracksRepository : TracksRepository
+): ViewModel() {
+
 
     val favoriteTracks: StateFlow<List<Track>> =
         tracksRepository.getFavoriteTracks()

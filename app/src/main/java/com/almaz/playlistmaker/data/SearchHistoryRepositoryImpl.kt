@@ -5,10 +5,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 class SearchHistoryRepositoryImpl(
-    private val scope: CoroutineScope
+    private val database : DatabaseMock
 ) : SearchHistoryRepository {
 
-    private val database = DatabaseMock(scope)
+
 
     // Реализация getHistoryRequests через Flow
     override suspend fun getHistoryRequests(): Flow<List<String>> = database.historyFlow

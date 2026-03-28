@@ -3,6 +3,7 @@ package com.almaz.playlistmaker.data
 import com.almaz.playlistmaker.data.network.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,8 +12,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class DatabaseMock(val scope: CoroutineScope) {
+class DatabaseMock {
 
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val historyList = mutableListOf<String>()
     private val _historyUpdates = MutableSharedFlow<Unit>()
     private val playlists = mutableListOf<Playlist>()
@@ -23,7 +25,7 @@ class DatabaseMock(val scope: CoroutineScope) {
         trackTime = "3:53",
         image = "",
         favorite = false,
-        playlistId = 0
+        playlistId = 1
     ),
         Track(
             id = 2,
@@ -32,7 +34,7 @@ class DatabaseMock(val scope: CoroutineScope) {
             trackTime = "3:20",
             image = "",
             favorite = false,
-            playlistId = 0
+            playlistId = 1
         ),
         Track(
             id = 3,
@@ -41,7 +43,7 @@ class DatabaseMock(val scope: CoroutineScope) {
             trackTime = "3:23",
             image = "",
             favorite = false,
-            playlistId = 0
+            playlistId = 1
         ),
         Track(
             id = 4,
@@ -50,7 +52,7 @@ class DatabaseMock(val scope: CoroutineScope) {
             trackTime = "3:14",
             image = "",
             favorite = false,
-            playlistId = 0
+            playlistId = 1
         ),
         Track(
             id = 5,
@@ -59,7 +61,7 @@ class DatabaseMock(val scope: CoroutineScope) {
             trackTime = "2:21",
             image = "",
             favorite = false,
-            playlistId = 0
+            playlistId = 1
         ),
         Track(
             id = 6,
@@ -68,7 +70,7 @@ class DatabaseMock(val scope: CoroutineScope) {
             trackTime = "3:35",
             image = "",
             favorite = false,
-            playlistId = 0
+            playlistId = 1
         ),
         Track(
             id = 7,

@@ -28,7 +28,7 @@ import com.almaz.playlistmaker.data.network.Track
 @Composable
 fun TrackListItem(
     track: Track,
-    onClick: (Track) -> Unit,
+    onClick: (Track) -> Unit = {},
     onLongClick: () -> Unit = {}
 ) {
     Row(
