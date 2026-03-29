@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.almaz.playlistmaker.R
+import com.almaz.playlistmaker.data.Playlist
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.SearchViewModel
@@ -39,7 +40,7 @@ import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 @Composable
 fun PlaylistsScreen(
     addNewPlaylist: () -> Unit = {},
-    navigateToPlaylist: (Long) -> Unit = {},
+    navigateToPlaylist: (Playlist) -> Unit = {},
     onBack: () -> Unit,
     playlistsViewModel: PlaylistsViewModel,
 ) {
@@ -63,7 +64,7 @@ fun PlaylistsScreen(
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playlists.size) { index ->
                         PlaylistListItem(playlist = playlists[index]) {
-                            navigateToPlaylist(index.toLong())
+                            navigateToPlaylist(playlists[index])
                         }
                         HorizontalDivider(thickness = 0.5.dp)
                     }

@@ -27,7 +27,9 @@ val viewModelModule = module {
     viewModel { FavoritesScreenViewModel(get()) }
     viewModel { PlaylistsModalBottomViewModel(get()) }
     viewModel { PlaylistsViewModel(get(), get(), get()) }
-    viewModel { params -> PlaylistViewModel(get(), params.get()) }
+    viewModel { (playlistId: Long) ->
+        PlaylistViewModel(get(), playlistId)
+    }
     viewModel { TrackDetailsViewModel(get()) }
 }
 

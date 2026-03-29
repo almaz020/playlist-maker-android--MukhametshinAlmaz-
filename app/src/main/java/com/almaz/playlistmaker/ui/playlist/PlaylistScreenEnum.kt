@@ -9,5 +9,5 @@ enum class PlaylistScreenEnum(val route: String) {
     NewPlaylist("newPlaylist_screen"),
     TrackDetailsScreen("trackDetailsScreen"),
 
-    Playlist("playlistScreen")
+    Playlist("playlistScreen/{playlistId}")
 }

@@ -27,15 +27,14 @@ import kotlin.math.ceil
 @Composable
 fun PlaylistScreen(
     playlistViewModel: PlaylistViewModel,
-    index: Int = 0,
     onClick: (Track) -> Unit,
     onBack: () -> Unit,
 ) {
     val playList = playlistViewModel.playlist.collectAsState(null)
 
     val totalMinutesRoundedUp: Int = playList.value?.tracks
-        ?.mapNotNull { track ->
-            track.trackTime?.split(":")?.let { parts ->
+        ?.map { track ->
+            track.trackTime.split(":").let { parts ->
                 val minutes = parts.getOrNull(0)?.toIntOrNull() ?: 0
                 val seconds = parts.getOrNull(1)?.toIntOrNull() ?: 0
                 minutes * 60 + seconds // сумма в секундах для этого трека
@@ -77,7 +76,7 @@ fun PlaylistScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = totalMinutesRoundedUp.toString(),
+                        text = totalMinutesRoundedUp.toString() + " минут",
                         fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
                         fontSize = 18.sp,
                     )
@@ -87,7 +86,7 @@ fun PlaylistScreen(
                         contentDescription = null,
                     )
                     Text(
-                        text = playlist.tracks.size.toString(),
+                        text = playlist.tracks.size.toString() + " треков",
                         fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
                         fontSize = 18.sp,
                     )

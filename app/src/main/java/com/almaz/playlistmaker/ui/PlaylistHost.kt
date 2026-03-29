@@ -71,7 +71,8 @@ fun PlaylistHost(navController: NavHostController) {
         composable(PlaylistScreenEnum.Playlists.name) {
             PlaylistsScreen(
                 addNewPlaylist = { navController.navigate(PlaylistScreenEnum.NewPlaylist.name) },
-                //navigateToPlaylist = { index -> navController.navigate("${Destination.PLAYLIST_SCREEN.name}/$index") },
+                navigateToPlaylist = { playlist ->
+                    navController.navigate("playlistScreen/${playlist.id}") },
                 onBack = { navController.popBackStack() },
                 playlistsViewModel = koinViewModel()
             )
@@ -117,21 +118,26 @@ fun PlaylistHost(navController: NavHostController) {
             }
         }
 
-//        composable(
-//            route = "${Destination.PLAYLIST_SCREEN.name}/{index}",
-//            arguments = listOf(
-//                navArgument("index") {
-//                    type = NavType.IntType
-//                }
-//            )
-//        ) { backStackEntry ->
-//            val index = backStackEntry.arguments?.getInt("index") ?: 0
-//            PlaylistScreen(
-//                modifier = modifier,
-//                viewModel = koinViewModel { parametersOf(index.toLong()) },
-//                navigateToTrack = { navController.navigate(it) },
-//                navigateBack = { navController.popBackStack() }
-//            )
-//        }
+        composable(
+            route = PlaylistScreenEnum.Playlist.route,
+            arguments = listOf(
+                navArgument("playlistId") {
+                    type = NavType.LongType
+                }
+            )
+        ) { backStackEntry ->
+            val playlistId = backStackEntry.arguments?.getLong("playlistId") ?: 0L
+
+            val viewModel: PlaylistViewModel = koinViewModel {
+                parametersOf(playlistId)
+            }
+
+            PlaylistScreen(
+              playlistViewModel = viewModel,
+                onBack = { navController.popBackStack() },
+                onClick = {track -> {}}
+            )
+
+        }
     }
 }
