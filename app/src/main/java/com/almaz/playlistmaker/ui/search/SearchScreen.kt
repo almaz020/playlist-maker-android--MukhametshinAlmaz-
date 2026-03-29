@@ -54,7 +54,6 @@ import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.Word
 import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.HistoryRequests
-import com.almaz.playlistmaker.ui.TrackDetailsScreen
 
 import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel

@@ -51,8 +51,8 @@ fun AddNewPlaylistScreen(
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
-    val isFormsEmpty by remember (name, description) {
-        derivedStateOf { name.isNotBlank() && description.isNotBlank() }
+    val isFormEmpty by remember (name) {
+        derivedStateOf { name.isNotBlank() }
     }
 
     Column(
@@ -129,7 +129,7 @@ fun AddNewPlaylistScreen(
                 Toast.makeText(context, "Плейлист успешно создан", Toast.LENGTH_SHORT).show()
                       },
             colors = ButtonDefaults.buttonColors(
-                containerColor = if(!isFormsEmpty) colorResource(R.color.light_gray_for_search_field) else Color.Blue,
+                containerColor = if(!isFormEmpty) colorResource(R.color.light_gray_for_search_field) else Color.Blue,
                 contentColor = Color.White
             ),
             shape = RoundedCornerShape(8.dp),

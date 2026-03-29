@@ -55,7 +55,9 @@ fun TrackDetailsScreen(
 ) {
     var isShowSheet by remember { mutableStateOf(false) }
 
-    val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
+    //val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
+
+    var isTrackFavorite by remember { mutableStateOf(trackSource.favorite) }
 
     val largeArtworkUrl = trackSource.image?.replace("100x100", "600x600")
 
@@ -114,8 +116,9 @@ fun TrackDetailsScreen(
                 contentColor = Color.Unspecified,
                 shape = CircleShape,
                 modifier = Modifier,
-                onClick =  { trackSource?.let {
-                    trackDetailsViewModel.updateTrackFavoriteStatus(it, !it.favorite)
+                onClick =  { trackSource.let {
+                    isTrackFavorite = !isTrackFavorite
+                    trackDetailsViewModel.updateTrackFavoriteStatus(it, isTrackFavorite )
                 } },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             )
@@ -123,7 +126,7 @@ fun TrackDetailsScreen(
                 Icon(
                     painter = painterResource(R.drawable.add_favorite),
                     contentDescription = null,
-                    tint = if (track?.favorite ?: false) Color.Red else Color.Unspecified
+                    tint = if (isTrackFavorite ?: false) Color.Red else Color.Unspecified
                 )
             }
             PlaylistBottomSheet(

@@ -18,8 +18,6 @@ import kotlinx.coroutines.launch
 class TrackDetailsViewModel(
     private val tracksRepository : TracksRepository
 ): ViewModel() {
-
-
     val favoriteTracks: StateFlow<List<Track>> =
         tracksRepository.getFavoriteTracks()
             .stateIn(
