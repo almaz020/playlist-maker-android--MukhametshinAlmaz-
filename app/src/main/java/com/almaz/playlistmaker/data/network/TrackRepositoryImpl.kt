@@ -1,30 +1,28 @@
 package com.almaz.playlistmaker.data.network
 
-import com.almaz.playlistmaker.data.DatabaseMock
 import com.almaz.playlistmaker.data.ITunesApiService
+import com.almaz.playlistmaker.data.NetworkClient
+import com.almaz.playlistmaker.data.database.AppDatabase
+import com.almaz.playlistmaker.data.database.toEntity
+import com.almaz.playlistmaker.data.database.toTrack
 import com.almaz.playlistmaker.data.dto.BaseResponse
 import com.almaz.playlistmaker.data.dto.TrackSearchRequest
 import com.almaz.playlistmaker.data.dto.TracksSearchResponse
 import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 class TracksRepositoryImpl(
-    private val database : DatabaseMock
+    private val retrofitNetworkClientImpl: NetworkClient,
+    private val database: AppDatabase
 ) : TracksRepository {
-    private val ITunesBaseUrl: String = " https://itunes.apple.com/"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(ITunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val retrofitNetworkClient = retrofit.create(ITunesApiService::class.java)
-
-    private val retrofitNetworkClientImpl = RetrofitNetworkClient(retrofitNetworkClient)
+    private val dao = database.TracksDao()
 
     override suspend fun searchTracks(expression: String): List<Track> {
         val request = TrackSearchRequest(expression = expression)
@@ -62,26 +60,26 @@ class TracksRepositoryImpl(
     }
 
     override fun getTrackByNameAndArtist(track: Track): Flow<Track?> {
-        return database.getTrackByNameAndArtist(track)
+        return dao.getTrackByNameAndArtist(track.trackName, track.artistName).map { it?.toTrack() }
     }
 
     override suspend fun insertTrackToPlaylist(track: Track?, playlistId: Long) {
-        database.insertTrack(track?.copy(playlistId = playlistId))
+        dao.insertTrack(track?.copy(playlistId = playlistId)?.toEntity())
     }
 
     override suspend fun deleteTrackFromPlaylist(track: Track) {
-        database.insertTrack(track.copy(playlistId = 0))
+        dao.insertTrack(track.copy(playlistId = 0).toEntity())
     }
 
     override suspend fun updateTrackFavoriteStatus(track: Track, isFavorite: Boolean) {
-        database.insertTrack(track.copy(favorite = isFavorite))
+        dao.insertTrack(track.copy(favorite = isFavorite).toEntity())
     }
 
     override fun deleteTracksByPlaylistId(playlistId: Long) {
-        database.deleteTracksByPlaylistId(playlistId)
+        dao.deleteTracksByPlaylistId(playlistId)
     }
 
     override fun getFavoriteTracks(): Flow<List<Track>> {
-        return database.getFavoriteTracks()
+        return dao.getFavoriteTracks().map {value -> value.map { it?.toTrack() } as List<Track> }
     }
 }

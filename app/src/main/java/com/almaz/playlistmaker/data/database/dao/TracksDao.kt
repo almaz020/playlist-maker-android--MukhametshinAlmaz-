@@ -15,4 +15,10 @@ interface TracksDao {
 
     @Query("SELECT * FROM tracks WHERE trackName = :name AND artistName = :artist")
     fun getTrackByNameAndArtist(name: String, artist: String): Flow<TrackEntity?>
+
+    @Query("SELECT * FROM tracks WHERE favorite = true")
+    fun getFavoriteTracks(): Flow<List<TrackEntity?>>
+
+    @Query("DELETE FROM tracks WHERE playlistId = :playlistId")
+    fun deleteTracksByPlaylistId(playlistId: Long)
 }

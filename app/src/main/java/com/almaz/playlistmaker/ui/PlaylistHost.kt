@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.almaz.playlistmaker.data.DatabaseMock
 import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.favorites.FavoritesScreen
 import com.almaz.playlistmaker.ui.main.MainScreen

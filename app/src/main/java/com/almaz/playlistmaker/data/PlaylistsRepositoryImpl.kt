@@ -1,12 +1,15 @@
 package com.almaz.playlistmaker.data
 
+import com.almaz.playlistmaker.data.database.AppDatabase
 import com.almaz.playlistmaker.domain.PlaylistsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 class PlaylistsRepositoryImpl(
-    private val database : DatabaseMock
+    private val database: AppDatabase
 ) : PlaylistsRepository {
+
+
 
     override fun getPlaylist(playlistId: Long): Flow<Playlist?> {
         return database.getPlaylist(playlistId)
