@@ -20,5 +20,5 @@ interface TracksDao {
     fun getFavoriteTracks(): Flow<List<TrackEntity?>>
 
     @Query("DELETE FROM tracks WHERE playlistId = :playlistId")
-    fun deleteTracksByPlaylistId(playlistId: Long)
+    suspend fun deleteTracksByPlaylistId(playlistId: Long)
 }

@@ -1,6 +1,5 @@
 package com.almaz.playlistmaker.data.network
 
-import com.almaz.playlistmaker.data.ITunesApiService
 import com.almaz.playlistmaker.data.NetworkClient
 import com.almaz.playlistmaker.data.database.AppDatabase
 import com.almaz.playlistmaker.data.database.toEntity
@@ -9,17 +8,14 @@ import com.almaz.playlistmaker.data.dto.BaseResponse
 import com.almaz.playlistmaker.data.dto.TrackSearchRequest
 import com.almaz.playlistmaker.data.dto.TracksSearchResponse
 import com.almaz.playlistmaker.domain.TracksRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 import java.io.IOException
 
 class TracksRepositoryImpl(
     private val retrofitNetworkClientImpl: NetworkClient,
-    private val database: AppDatabase
+    database: AppDatabase
 ) : TracksRepository {
 
     private val dao = database.TracksDao()
@@ -55,7 +51,7 @@ class TracksRepositoryImpl(
 
             -2 -> throw RuntimeException("Ошибка сервера")
 
-            else -> throw RuntimeException(response.errorMessage ?: "Ошибка")
+            else -> throw RuntimeException(response.errorMessage)
         }
     }
 
@@ -75,11 +71,11 @@ class TracksRepositoryImpl(
         dao.insertTrack(track.copy(favorite = isFavorite).toEntity())
     }
 
-    override fun deleteTracksByPlaylistId(playlistId: Long) {
-        dao.deleteTracksByPlaylistId(playlistId)
+    override suspend fun deleteTracksByPlaylistId(id: Long) {
+        dao.deleteTracksByPlaylistId(id)
     }
 
     override fun getFavoriteTracks(): Flow<List<Track>> {
-        return dao.getFavoriteTracks().map {value -> value.map { it?.toTrack() } as List<Track> }
+        return dao.getFavoriteTracks().map { tracks -> tracks.mapNotNull { it?.toTrack() } }
     }
 }

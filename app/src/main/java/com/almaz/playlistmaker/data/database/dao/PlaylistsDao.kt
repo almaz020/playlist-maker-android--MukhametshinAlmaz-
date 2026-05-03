@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlaylistsDao {
     @Query("SELECT * FROM playlists")
-    fun getPlaylists() : Flow<List<PlaylistEntity?>>
+    fun getAllPlaylists() : Flow<List<PlaylistEntity>>
 }
