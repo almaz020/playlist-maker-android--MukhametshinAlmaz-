@@ -16,9 +16,7 @@ import kotlinx.coroutines.launch
 
 class PlaylistsViewModel(
     private val playlistsRepository: PlaylistsRepository,
-    private val tracksRepository: TracksRepository,
-    private val databaseRepository : DatabaseMock
-
+    private val tracksRepository: TracksRepository
 ) : ViewModel() {
     val playlists: Flow<List<Playlist>> = flow {
         val collectedPlaylists = mutableListOf<Playlist>()
@@ -28,7 +26,6 @@ class PlaylistsViewModel(
         }
     }
 
-    val favoriteList: Flow<List<Track>> = databaseRepository.getFavoriteTracks()
     fun createNewPlayList(namePlaylist: String, description: String) {
         viewModelScope.launch(Dispatchers.IO) {
             playlistsRepository.addNewPlaylist(namePlaylist, description)
