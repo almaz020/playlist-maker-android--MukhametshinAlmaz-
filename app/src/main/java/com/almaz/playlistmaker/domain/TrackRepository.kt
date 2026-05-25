@@ -19,4 +19,8 @@ interface TracksRepository {
 
     fun getTrackById(track: Track): Flow<Track?>
 
+    fun getTracksForPlaylist(playlistId: Long): Flow<List<Track>>
+
+    fun getTracksCount(playlistId: Long): Flow<Int>
+
 }

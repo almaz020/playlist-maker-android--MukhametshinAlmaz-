@@ -9,7 +9,11 @@ import kotlinx.coroutines.flow.Flow
 class PlaylistViewModel(
     private val playlistsRepository: PlaylistsRepository,
     private val playlistId: Long,
+    private val tracksRepository: TracksRepository
 ): ViewModel() {
     val playlist = playlistsRepository.getPlaylist(playlistId)
+
+    val tracks =
+        tracksRepository.getTracksForPlaylist(playlistId)
 
 }

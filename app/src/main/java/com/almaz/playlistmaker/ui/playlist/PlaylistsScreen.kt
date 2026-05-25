@@ -46,6 +46,8 @@ fun PlaylistsScreen(
 ) {
     val playlists by playlistsViewModel.playlists.collectAsState(emptyList())
 
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -63,7 +65,14 @@ fun PlaylistsScreen(
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playlists.size) { index ->
-                        PlaylistListItem(playlist = playlists[index]) {
+
+                        val playlist = playlists[index]
+
+                        val tracksCount by playlistsViewModel
+                            .getTracksCount(playlist.id)
+                            .collectAsState(initial = 0)
+
+                        PlaylistListItem(playlist = playlists[index],tracksCount ) {
                             navigateToPlaylist(playlists[index])
                         }
                         HorizontalDivider(thickness = 0.5.dp)

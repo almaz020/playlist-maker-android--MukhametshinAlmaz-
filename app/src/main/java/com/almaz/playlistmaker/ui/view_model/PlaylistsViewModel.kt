@@ -25,6 +25,10 @@ class PlaylistsViewModel(
         }
     }
 
+    fun getTracksCount(playlistId: Long): Flow<Int> {
+        return tracksRepository.getTracksCount(playlistId)
+    }
+
     fun createNewPlayList(namePlaylist: String, description: String) {
         viewModelScope.launch(Dispatchers.IO) {
             playlistsRepository.addNewPlaylist(namePlaylist, description)
@@ -37,17 +41,4 @@ class PlaylistsViewModel(
         }
     }
 
-
-    suspend fun deleteTrackFromPlaylist(track: Track) {
-        tracksRepository.deleteTrackFromPlaylist(track)
-    }
-
-    suspend fun deletePlaylistById(id: Long) {
-        tracksRepository.deleteTracksByPlaylistId(id)
-        playlistsRepository.deletePlaylistById(id)
-    }
-
-    suspend fun isExist(track: Track): Track? {
-        return tracksRepository.getTrackByNameAndArtist(track = track).firstOrNull()
-    }
 }

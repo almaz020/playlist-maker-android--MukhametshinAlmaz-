@@ -30,5 +30,13 @@ interface TracksDao {
 
     @Query("SELECT * FROM tracks WHERE id = :id")
     suspend fun getTrackOnce(id: Long): TrackEntity?
+
+    @Query("SELECT * FROM tracks WHERE playlistId = :playlistId")
+    fun getTracksForPlaylist(
+        playlistId: Long
+    ): Flow<List<TrackEntity>>
+
+    @Query("SELECT COUNT(*) FROM tracks WHERE playlistId = :playlistId")
+    fun getTracksCount(playlistId: Long): Flow<Int>
 }
 

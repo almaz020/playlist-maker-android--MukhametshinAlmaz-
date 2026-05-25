@@ -21,27 +21,40 @@ import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.Playlist
 
 @Composable
-fun PlaylistListItem(playlist: Playlist, onClick: () -> Unit) {
+fun PlaylistListItem(
+    playlist: Playlist,
+    tracksCount: Int,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = { onClick.invoke() }),
+            .clickable { onClick() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+
         Image(
             modifier = Modifier.size(48.dp),
             painter = painterResource(id = R.drawable.ic_music),
             contentDescription = playlist.name,
-
         )
+
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.Start
         ) {
-            Text(playlist.name, fontSize = 16.sp)
-            val text = "${playlist.tracks.size} tracks"
-            Text(text, fontSize = 11.sp, color = Color.Gray)
+
+            Text(
+                text = playlist.name,
+                fontSize = 16.sp
+            )
+
+            Text(
+                text = "$tracksCount tracks",
+                fontSize = 11.sp,
+                color = Color.Gray
+            )
         }
     }
 }

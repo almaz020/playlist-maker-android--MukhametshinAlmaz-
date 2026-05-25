@@ -64,6 +64,7 @@ class TracksRepositoryImpl(
         dao.insertTrack(track.copy(playlistId = playlistId).toEntity())
     }
 
+
     override suspend fun deleteTrackFromPlaylist(track: Track) {
         dao.insertTrack(track.copy(playlistId = 0).toEntity())
     }
@@ -100,5 +101,18 @@ class TracksRepositoryImpl(
             .map { it?.toTrack() }
     }
 
+    override fun getTracksForPlaylist(
+        playlistId: Long
+    ): Flow<List<Track>> {
+
+        return dao.getTracksForPlaylist(playlistId)
+            .map { list ->
+                list.map { it.toTrack() }
+            }
+    }
+
+    override fun getTracksCount(playlistId: Long): Flow<Int> {
+        return dao.getTracksCount(playlistId)
+    }
 
 }

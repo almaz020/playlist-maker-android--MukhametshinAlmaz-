@@ -40,7 +40,7 @@ val viewModelModule = module {
     viewModel { PlaylistsModalBottomViewModel(get()) }
     viewModel { PlaylistsViewModel(get(), get()) }
     viewModel { (playlistId: Long) ->
-        PlaylistViewModel(get(), playlistId)
+        PlaylistViewModel(get(), playlistId, get())
     }
     viewModel { TrackDetailsViewModel(get()) }
 }
