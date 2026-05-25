@@ -1,7 +1,7 @@
 package com.almaz.playlistmaker.data.dto
 
 data class TrackDto(
-    val id: Long,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Long,

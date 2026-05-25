@@ -1,12 +1,7 @@
 package com.almaz.playlistmaker.ui.view_model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-//import com.almaz.playlistmaker.creator.Creator
-import com.almaz.playlistmaker.data.SearchHistoryRepositoryImpl
-import com.almaz.playlistmaker.data.Word
-import com.almaz.playlistmaker.data.network.TracksRepositoryImpl
 import com.almaz.playlistmaker.domain.SearchHistoryRepository
 import com.almaz.playlistmaker.domain.TracksRepository
 import com.almaz.playlistmaker.ui.search.SearchState
@@ -36,12 +31,15 @@ class SearchViewModel(
                 .collect { query ->
                     if (query.isNotEmpty()) {
                         performSearch(query)
+                        searchHistoryRepository.addToHistory(query)
                     }
                 }
         }
     }
     fun updateQuery(query: String) {
         _searchQuery.value = query
+
+
     }
     fun performSearch(request: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,5 +61,5 @@ class SearchViewModel(
     fun clearSearch() {
         _searchScreenState.update { SearchState.Initial }
     }
-    suspend fun getHistoryList() = searchHistoryRepository.getHistoryRequests()
+    fun getHistoryList() = searchHistoryRepository.getHistoryRequests()
 }

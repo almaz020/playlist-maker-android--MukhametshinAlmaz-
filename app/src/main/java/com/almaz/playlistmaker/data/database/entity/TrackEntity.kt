@@ -1,8 +1,7 @@
 package com.almaz.playlistmaker.data.database.entity
 
-import androidx.room3.Entity
-import androidx.room3.PrimaryKey
-
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 @Entity(tableName = "tracks")
 data class TrackEntity(
     @PrimaryKey

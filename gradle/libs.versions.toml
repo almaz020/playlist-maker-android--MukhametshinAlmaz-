@@ -15,10 +15,9 @@ runtime = "1.10.2"
 runtimeVersion = "1.10.4"
 lifecycleViewmodelKtx = "2.10.0"
 material3 = "1.4.0"
-roomVersion = "2.7.2"
-kspVersion = "2.2.0-2.0.2"
-room3CommonJvm = "3.0.0-alpha02"
-room3Runtime = "3.0.0-alpha02"
+datastoreCore = "1.2.1"
+room = "2.7.2"
+ksp = "2.2.0-2.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,19 +41,16 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtimeVersion" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-# Основаная зависимость библиотеки
-androidx-room = { group= "androidx.room", name = "room-runtime", version.ref = "roomVersion"}
-# Зависимость для работы Room с корутинами
-androidx-room-ktx = { group= "androidx.room", name = "room-ktx", version.ref = "roomVersion"}
-# Зависимость для работы Room с KSP
-androidx-room-ksp = { group= "androidx.room", name = "room-compiler", version.ref = "roomVersion"}
-androidx-room3-common-jvm = { group = "androidx.room3", name = "room3-common-jvm", version.ref = "room3CommonJvm" }
-androidx-room3-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3Runtime" }
+androidx-room = { group= "androidx.room", name = "room-runtime", version.ref = "room"}
+androidx-room-ktx = { group= "androidx.room", name = "room-ktx", version.ref = "room"}
+androidx-room-ksp = { group= "androidx.room", name = "room-compiler", version.ref = "room"}
+
+androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 

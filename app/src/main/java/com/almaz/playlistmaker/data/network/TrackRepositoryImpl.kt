@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 import java.io.IOException
+import kotlin.collections.map
 
 class TracksRepositoryImpl(
     private val retrofitNetworkClientImpl: NetworkClient,
@@ -37,7 +38,7 @@ class TracksRepositoryImpl(
 
                     val formattedTime = "%d:%02d".format(minutes, seconds)
                     Track(
-                        id = it.id,
+                        id = it.trackId,
                         trackName = it.trackName,
                         artistName = it.artistName,
                         trackTime = formattedTime,
@@ -59,16 +60,31 @@ class TracksRepositoryImpl(
         return dao.getTrackByNameAndArtist(track.trackName, track.artistName).map { it?.toTrack() }
     }
 
-    override suspend fun insertTrackToPlaylist(track: Track?, playlistId: Long) {
-        dao.insertTrack(track?.copy(playlistId = playlistId)?.toEntity())
+    override suspend fun insertTrackToPlaylist(track: Track, playlistId: Long) {
+        dao.insertTrack(track.copy(playlistId = playlistId).toEntity())
     }
 
     override suspend fun deleteTrackFromPlaylist(track: Track) {
         dao.insertTrack(track.copy(playlistId = 0).toEntity())
     }
 
-    override suspend fun updateTrackFavoriteStatus(track: Track, isFavorite: Boolean) {
-        dao.insertTrack(track.copy(favorite = isFavorite).toEntity())
+    override suspend fun updateTrackFavoriteStatus(track: Track) {
+
+        val currentTrack = dao.getTrackOnce(track.id)
+
+        if (currentTrack == null) {
+
+            dao.insertTrack(
+                track.copy(favorite = true).toEntity()
+            )
+
+        } else {
+
+            dao.updateFavorite(
+                id = track.id,
+                isFavorite = !currentTrack.favorite
+            )
+        }
     }
 
     override suspend fun deleteTracksByPlaylistId(id: Long) {
@@ -76,6 +92,13 @@ class TracksRepositoryImpl(
     }
 
     override fun getFavoriteTracks(): Flow<List<Track>> {
-        return dao.getFavoriteTracks().map { tracks -> tracks.mapNotNull { it?.toTrack() } }
+        return dao.getFavoriteTracks().map { tracks -> tracks.map { it.toTrack() } }
     }
+
+    override fun getTrackById(track: Track): Flow<Track?> {
+        return dao.getTrackById(track.id)
+            .map { it?.toTrack() }
+    }
+
+
 }

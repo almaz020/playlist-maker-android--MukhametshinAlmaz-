@@ -66,8 +66,6 @@ fun SearchScreen(
     searchViewModel: SearchViewModel,
     goToTrackDetailsScreen: (Track) -> Unit,
 ) {
-    val context = LocalContext.current
-
     val screenState by searchViewModel.searchScreenState.collectAsState()
 
     var text by remember { mutableStateOf("") }

@@ -1,5 +1,6 @@
 package com.almaz.playlistmaker.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,11 +54,13 @@ fun TrackDetailsScreen(
     trackDetailsViewModel: TrackDetailsViewModel,
     playlistsViewModel: PlaylistsViewModel,
 ) {
+    val currentTrack by trackDetailsViewModel
+        .getTrack(trackSource)
+        .collectAsState(initial = trackSource)
+
     var isShowSheet by remember { mutableStateOf(false) }
 
-    //val track by trackDetailsViewModel.getTrack(trackSource).collectAsState()
-
-    var isTrackFavorite by remember { mutableStateOf(trackSource.favorite) }
+    val isFavorite = currentTrack?.favorite ?: false
 
     val largeArtworkUrl = trackSource.image?.replace("100x100", "600x600")
 
@@ -81,14 +84,14 @@ fun TrackDetailsScreen(
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 24.dp),
-            text = trackSource?.trackName ?: "",
+            text = trackSource.trackName,
             fontSize = 22.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 12.dp),
-            text = trackSource?.trackName ?: "",
+            text = trackSource.trackName ,
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
@@ -113,20 +116,17 @@ fun TrackDetailsScreen(
             }
             FloatingActionButton(
                 containerColor = Color.Transparent,
-                contentColor = Color.Unspecified,
                 shape = CircleShape,
-                modifier = Modifier,
-                onClick =  { trackSource.let {
-                    isTrackFavorite = !isTrackFavorite
-                    trackDetailsViewModel.updateTrackFavoriteStatus(it, isTrackFavorite )
-                } },
+                onClick = {
+
+                    trackDetailsViewModel.updateTrackFavoriteStatus(trackSource)
+                },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
-            )
-            {
+            ) {
                 Icon(
                     painter = painterResource(R.drawable.add_favorite),
                     contentDescription = null,
-                    tint = if (isTrackFavorite ?: false) Color.Red else Color.Unspecified
+                    tint = if (isFavorite) Color.Red else Color.Unspecified
                 )
             }
             PlaylistBottomSheet(
@@ -150,7 +150,7 @@ fun TrackDetailsScreen(
             )
             Text(
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 16.dp),
-                text = trackSource?.trackTime ?: "",
+                text = trackSource.trackTime ?: "",
                 fontSize = 13.sp,
                 fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             )

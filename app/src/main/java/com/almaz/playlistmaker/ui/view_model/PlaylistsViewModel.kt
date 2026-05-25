@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.almaz.playlistmaker.data.Playlist
 import com.almaz.playlistmaker.data.PlaylistsRepositoryImpl
 import com.almaz.playlistmaker.data.network.Track
-import com.almaz.playlistmaker.data.network.TracksRepositoryImpl
 import com.almaz.playlistmaker.domain.PlaylistsRepository
 import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.Dispatchers
@@ -32,15 +31,12 @@ class PlaylistsViewModel(
         }
     }
 
-    fun insertTrackToPlaylist(track: Track?, playlistId: Long) {
+    fun insertTrackToPlaylist(track: Track, playlistId: Long) {
         viewModelScope.launch {
             tracksRepository.insertTrackToPlaylist(track, playlistId)
         }
     }
 
-    suspend fun toggleFavorite(track: Track, isFavorite: Boolean) {
-        tracksRepository.updateTrackFavoriteStatus(track, isFavorite)
-    }
 
     suspend fun deleteTrackFromPlaylist(track: Track) {
         tracksRepository.deleteTrackFromPlaylist(track)

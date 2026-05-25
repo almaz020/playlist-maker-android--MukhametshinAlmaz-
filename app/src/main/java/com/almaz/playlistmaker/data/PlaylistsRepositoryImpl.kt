@@ -1,6 +1,7 @@
 package com.almaz.playlistmaker.data
 
 import com.almaz.playlistmaker.data.database.AppDatabase
+import com.almaz.playlistmaker.data.database.entity.PlaylistEntity
 import com.almaz.playlistmaker.data.database.toPlaylist
 import com.almaz.playlistmaker.domain.PlaylistsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ class PlaylistsRepositoryImpl(
     private val dao = database.PlaylistsDao()
 
     override fun getPlaylist(playlistId: Long): Flow<Playlist?> {
-        return dao.getPlaylist(playlistId)
+        return dao.getPlaylist(playlistId).map { playlist -> playlist?.toPlaylist() }
     }
 
     override fun getAllPlaylists(): Flow<List<Playlist>> {
@@ -23,8 +24,12 @@ class PlaylistsRepositoryImpl(
 
     override suspend fun addNewPlaylist(name: String, description: String) {
         dao.addNewPlaylist(
-            name = name,
-            description = description
+            PlaylistEntity(
+                name = name,
+                description = description,
+                tracksJson = ""
+            )
+
         )
     }
 

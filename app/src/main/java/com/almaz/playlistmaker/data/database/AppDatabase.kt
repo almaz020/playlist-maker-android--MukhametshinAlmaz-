@@ -1,14 +1,16 @@
 package com.almaz.playlistmaker.data.database
 
 import android.annotation.SuppressLint
-import androidx.room3.Database
-import androidx.room3.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.almaz.playlistmaker.data.Playlist
 import com.almaz.playlistmaker.data.database.dao.PlaylistsDao
 import com.almaz.playlistmaker.data.database.dao.TracksDao
 import com.almaz.playlistmaker.data.database.entity.PlaylistEntity
 import com.almaz.playlistmaker.data.database.entity.TrackEntity
 import com.almaz.playlistmaker.data.network.Track
+import com.google.gson.Gson
 
 @SuppressLint("RestrictedApi")
 @Database(
@@ -17,6 +19,7 @@ import com.almaz.playlistmaker.data.network.Track
         PlaylistEntity::class,
     ], version = 1, exportSchema = false
 )
+@TypeConverters(TrackListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun TracksDao(): TracksDao
     abstract fun PlaylistsDao(): PlaylistsDao
@@ -51,15 +54,16 @@ fun PlaylistEntity.toPlaylist(): Playlist {
         id = this.id,
         name = this.name,
         description = this.description,
-        tracks = this.tracks
+        tracks = emptyList()
     )
 }
 
 fun Playlist.toEntity(): PlaylistEntity {
+    val gson = Gson()
     return PlaylistEntity(
         id = this.id,
         name = this.name,
         description = this.description,
-        tracks = this.tracks
+        tracksJson = gson.toJson(this.tracks)
     )
 }

@@ -49,7 +49,7 @@ fun PlaylistsModalBottomScreen(
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playlists.size) { index ->
                         PlaylistListItem(playlist = playlists[index]) {
-                            playlistsViewModel.insertTrackToPlaylist(track, playlists[index].id)
+                            playlistsViewModel.insertTrackToPlaylist(track!!, playlists[index].id)
                             Toast.makeText(context, "Трек успешно добавлен в плейлист", Toast.LENGTH_SHORT).show()
                             onDismiss()
                         }

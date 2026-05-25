@@ -1,14 +1,14 @@
 package com.almaz.playlistmaker.data.database.entity
 
-import androidx.room3.Entity
-import androidx.room3.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.almaz.playlistmaker.data.network.Track
 
 @Entity(tableName = "playlists")
 data class PlaylistEntity(
-    @PrimaryKey
-    val id: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val name: String,
     val description: String,
-    var tracks: List<Track>
+    val tracksJson: String
 )
