@@ -1,12 +1,10 @@
 package com.almaz.playlistmaker.data
 
 import com.almaz.playlistmaker.data.dto.TracksSearchResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ITunesApiService {
-
     @GET("search")
     suspend fun searchTracks(
         @Query("term") query: String,

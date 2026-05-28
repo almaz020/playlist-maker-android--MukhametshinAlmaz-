@@ -7,7 +7,6 @@ import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 class FavoritesScreenViewModel(
     private val tracksRepository : TracksRepository

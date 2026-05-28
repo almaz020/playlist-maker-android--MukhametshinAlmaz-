@@ -36,7 +36,6 @@ fun TrackEntity.toTrack(): Track {
         playlistId = this.playlistId
     )
 }
-
 fun Track.toEntity(): TrackEntity {
     return TrackEntity(
         id = this.id,
@@ -48,7 +47,6 @@ fun Track.toEntity(): TrackEntity {
         playlistId = this.playlistId
     )
 }
-
 fun PlaylistEntity.toPlaylist(): Playlist {
     return Playlist(
         id = this.id,
@@ -57,7 +55,6 @@ fun PlaylistEntity.toPlaylist(): Playlist {
         tracks = emptyList()
     )
 }
-
 fun Playlist.toEntity(): PlaylistEntity {
     val gson = Gson()
     return PlaylistEntity(

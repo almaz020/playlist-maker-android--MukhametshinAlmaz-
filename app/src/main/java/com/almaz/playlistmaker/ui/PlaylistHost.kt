@@ -1,8 +1,6 @@
 package com.almaz.playlistmaker.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,13 +16,8 @@ import com.almaz.playlistmaker.ui.playlist.PlaylistsScreen
 import com.almaz.playlistmaker.ui.search.SearchScreen
 import com.almaz.playlistmaker.ui.settings.SettingsScreen
 import com.almaz.playlistmaker.ui.view_model.PlaylistViewModel
-import com.almaz.playlistmaker.ui.view_model.PlaylistsModalBottomViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
-import com.almaz.playlistmaker.ui.view_model.SearchViewModel
 import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -134,7 +127,7 @@ fun PlaylistHost(navController: NavHostController) {
             PlaylistScreen(
               playlistViewModel = viewModel,
                 onBack = { navController.popBackStack() },
-                onClick = {track -> {}}
+                onClick = {}
             )
 
         }

@@ -1,6 +1,5 @@
 package com.almaz.playlistmaker.ui.main
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,15 +28,15 @@ import androidx.compose.ui.unit.sp
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.R
 
-
 @Composable
-    fun MainScreen(
+fun MainScreen(
         modifier: Modifier = Modifier,
         onGoToSearch: () -> Unit = {},
         onGoToSettings: () -> Unit = {},
         onGoToPlaylists: () -> Unit = {},
         onGoToFavorites: () -> Unit = {},
-    ) {
+        )
+{
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -65,9 +64,9 @@ import com.almaz.playlistmaker.R
                 onGoToSettings = onGoToSettings,
                 onGoToPlaylists = onGoToPlaylists,
                 onGoToFavorites = onGoToFavorites,
-            )
+                )
         }
-    }
+}
 
 
     @Composable

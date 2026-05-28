@@ -1,19 +1,14 @@
 package com.almaz.playlistmaker.ui
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,15 +30,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.almaz.playlistmaker.PlaylistBottomSheet
-
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
-import com.almaz.playlistmaker.ui.view_model.PlaylistsModalBottomViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistsViewModel
 import com.almaz.playlistmaker.ui.view_model.TrackDetailsViewModel
 
@@ -54,13 +46,20 @@ fun TrackDetailsScreen(
     trackDetailsViewModel: TrackDetailsViewModel,
     playlistsViewModel: PlaylistsViewModel,
 ) {
-    val currentTrack by trackDetailsViewModel
-        .getTrack(trackSource)
-        .collectAsState(initial = trackSource)
+
+    var refreshTrigger by remember { mutableStateOf(0) }
+
+    val trackFlow = remember(trackSource, refreshTrigger) {
+        trackDetailsViewModel.getTrack(trackSource)
+    }
+
+    val currentTrack by trackFlow.collectAsState(initial = trackSource)
 
     var isShowSheet by remember { mutableStateOf(false) }
 
+
     val isFavorite = currentTrack?.favorite ?: false
+
 
     val largeArtworkUrl = trackSource.image?.replace("100x100", "600x600")
 
@@ -91,7 +90,7 @@ fun TrackDetailsScreen(
         )
         Text(
             modifier = Modifier.padding(end = 24.dp, start = 24.dp, top = 12.dp),
-            text = trackSource.trackName ,
+            text = trackSource.artistName ,
             fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             textAlign = TextAlign.Start,
@@ -118,8 +117,8 @@ fun TrackDetailsScreen(
                 containerColor = Color.Transparent,
                 shape = CircleShape,
                 onClick = {
-
                     trackDetailsViewModel.updateTrackFavoriteStatus(trackSource)
+                    refreshTrigger++
                 },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             ) {
