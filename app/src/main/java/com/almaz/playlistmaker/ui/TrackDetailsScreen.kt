@@ -58,7 +58,6 @@ fun TrackDetailsScreen(
 
     var isShowSheet by remember { mutableStateOf(false) }
 
-
     val isFavorite = currentTrack?.favorite ?: false
 
 
@@ -78,8 +77,8 @@ fun TrackDetailsScreen(
             ),
             model = largeArtworkUrl,
             contentDescription = null,
-            placeholder = painterResource(R.drawable.ic_music), // пока загружается
-            error = painterResource(R.drawable.ic_music),       // если ошибка загрузки
+            placeholder = painterResource(R.drawable.ic_music),
+            error = painterResource(R.drawable.ic_music),
             fallback = painterResource(R.drawable.ic_music),
         )
         Text(
@@ -120,6 +119,7 @@ fun TrackDetailsScreen(
                 onClick = {
                     trackDetailsViewModel.updateTrackFavoriteStatus(trackSource)
                     refreshTrigger++
+
                 },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
             ) {

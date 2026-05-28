@@ -23,4 +23,6 @@ interface TracksRepository {
 
     fun getTracksCount(playlistId: Long): Flow<Int>
 
+    suspend fun deleteTrackById(id: Long)
+
 }

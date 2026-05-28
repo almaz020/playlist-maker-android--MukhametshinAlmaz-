@@ -25,4 +25,10 @@ class TrackDetailsViewModel(
             tracksRepository.updateTrackFavoriteStatus(track)
         }
     }
+
+    fun deleteTrackById(id: Long) {
+        viewModelScope.launch {
+            tracksRepository.deleteTrackById(id)
+        }
+    }
 }

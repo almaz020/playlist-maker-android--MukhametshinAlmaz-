@@ -38,5 +38,8 @@ interface TracksDao {
 
     @Query("SELECT COUNT(*) FROM tracks WHERE playlistId = :playlistId")
     fun getTracksCount(playlistId: Long): Flow<Int>
+
+    @Query("DELETE FROM tracks WHERE id = :id AND playlistId = 0")
+    suspend fun deleteTrackById(id: Long)
 }
 

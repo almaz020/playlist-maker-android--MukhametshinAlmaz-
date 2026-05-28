@@ -3,7 +3,8 @@
     <string name="app_settings">Настройки</string>
     <string name="search">Поиск</string>
     <string name="playlists">Плейлисты</string>
-    <string name="favourite">Избранное</string>
+    <string name="favourite_tracks">Избранные треки</string>
+    <string name="favorite">Избранное</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="write_to_support">Написать в поддержку</string>
@@ -19,6 +20,6 @@
     <string name="trackTime">Длительность</string>
     <string name="update">Обновить</string>
     <string name="error_searching">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
-
+    <string name="empty">Ваша медиатека пуста</string>
 </resources>
 

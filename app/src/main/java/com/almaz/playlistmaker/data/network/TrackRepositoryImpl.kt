@@ -115,4 +115,8 @@ class TracksRepositoryImpl(
         return dao.getTracksCount(playlistId)
     }
 
+    override suspend fun deleteTrackById(id: Long) {
+        dao.deleteTrackById(id)
+    }
+
 }

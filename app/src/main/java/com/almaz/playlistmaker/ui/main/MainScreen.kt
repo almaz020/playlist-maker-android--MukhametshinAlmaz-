@@ -103,7 +103,7 @@ fun MainScreen(
                 )
                 MenuRow(
                     painter = painterResource(R.drawable.favourite),
-                    text = stringResource(R.string.favourite),
+                    text = stringResource(R.string.favorite),
                     onClick = onGoToFavorites
                 )
                 MenuRow(
