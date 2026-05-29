@@ -139,7 +139,7 @@ fun AddNewPlaylistScreen(
                     contentDescription = null,
                 )
                 Text(
-                    text = "Выберите обложку",
+                    text = stringResource(R.string.choose_cover),
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
                 )

@@ -41,5 +41,8 @@ interface TracksDao {
 
     @Query("DELETE FROM tracks WHERE id = :id AND playlistId = 0")
     suspend fun deleteTrackById(id: Long)
+
+    @Query("UPDATE tracks SET playlistId = 0 WHERE id = :trackId")
+    suspend fun deleteTrackFromPlaylist(trackId: Long)
 }
 

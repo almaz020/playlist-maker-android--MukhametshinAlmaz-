@@ -25,4 +25,6 @@ interface TracksRepository {
 
     suspend fun deleteTrackById(id: Long)
 
+    suspend fun deleteTrackFromPlaylist(trackId: Long)
+
 }

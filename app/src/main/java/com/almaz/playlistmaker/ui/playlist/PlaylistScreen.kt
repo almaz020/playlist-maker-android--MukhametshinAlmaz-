@@ -171,7 +171,8 @@ fun PlaylistScreen(
 
                         TrackListItem(
                             track = track,
-                            onClick = onClick
+                            onClick = onClick,
+                            onLongClick = { playlistViewModel.deleteTrackFromPlaylist(track.id) }
                         )
                     }
                 }
