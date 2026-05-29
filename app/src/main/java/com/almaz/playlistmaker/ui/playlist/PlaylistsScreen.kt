@@ -34,8 +34,6 @@ fun PlaylistsScreen(
 ) {
     val playlists by playlistsViewModel.playlists.collectAsState(emptyList())
 
-
-
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier

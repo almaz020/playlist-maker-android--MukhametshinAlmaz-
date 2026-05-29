@@ -84,12 +84,9 @@ fun PlaylistHost(navController: NavHostController) {
             )
         }
         composable(PlaylistScreenEnum.NewPlaylist.name) {
-            val playlistsViewModel: PlaylistsViewModel = koinViewModel()
             AddNewPlaylistScreen(
                 onBack = { navigateBack() },
-                onCreateClicked = { name, description ->
-                    playlistsViewModel.createNewPlayList(name, description)
-                }
+                addPlaylistViewModel = koinViewModel(),
             )
         }
 

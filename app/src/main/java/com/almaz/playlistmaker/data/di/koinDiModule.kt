@@ -16,6 +16,7 @@ import com.almaz.playlistmaker.data.network.TracksRepositoryImpl
 import com.almaz.playlistmaker.domain.PlaylistsRepository
 import com.almaz.playlistmaker.domain.SearchHistoryRepository
 import com.almaz.playlistmaker.domain.TracksRepository
+import com.almaz.playlistmaker.ui.view_model.AddNewPlaylistViewModel
 import com.almaz.playlistmaker.ui.view_model.FavoritesScreenViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistViewModel
 import com.almaz.playlistmaker.ui.view_model.PlaylistsModalBottomViewModel
@@ -43,6 +44,7 @@ val viewModelModule = module {
         PlaylistViewModel(get(), playlistId, get())
     }
     viewModel { TrackDetailsViewModel(get()) }
+    viewModel { AddNewPlaylistViewModel(get()) }
 }
 
 val databaseModule = module {

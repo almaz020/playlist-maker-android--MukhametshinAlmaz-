@@ -142,7 +142,7 @@ fun TrackDetailsScreen(
                 isShowPanel = isShowSheet,
                 onDismissRequest = { isShowSheet = false },
                 playlistsViewModel = playlistsViewModel,
-                track = currentTrack
+                track = trackSource
             )
         }
         Row(

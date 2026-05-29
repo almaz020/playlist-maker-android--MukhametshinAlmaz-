@@ -1,9 +1,11 @@
 package com.almaz.playlistmaker.ui.playlist
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -17,11 +19,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.data.network.Track
 import com.almaz.playlistmaker.ui.PanelHeader
 import com.almaz.playlistmaker.ui.TrackListItem
 import com.almaz.playlistmaker.ui.view_model.PlaylistViewModel
+import java.io.File
 import kotlin.math.ceil
 
 @Composable
@@ -65,21 +69,34 @@ fun PlaylistScreen(
             isButtonEnabled = true,
             onBack = onBack
         )
+        if (playlist?.coverImageUri != null) {
+            // Показываем выбранное изображение
+            AsyncImage(
+                model = File(playlist?.coverImageUri.toString()),
+                contentDescription = null,
+                modifier = Modifier.padding(
+                    top = 132.dp,
+                    start = 130.dp,
+                    end = 130.dp
+                ),
 
-        Image(
-            modifier = Modifier.padding(
-                top = 132.dp,
-                start = 130.dp,
-                end = 130.dp
-            ),
-            painter = painterResource(R.drawable.add_photo),
-            contentDescription = null,
-        )
+            )
+        } else {
+            // Показываем плейсхолдер
+            Image(
+                modifier = Modifier.padding(
+                    top = 132.dp,
+                    start = 130.dp,
+                    end = 130.dp
+                ),
+                painter = painterResource(R.drawable.add_photo),
+                contentDescription = null,
+            )
+        }
+
 
         playlist?.let {
-
             Column {
-
                 Text(
                     text = it.name,
                     fontFamily = FontFamily(

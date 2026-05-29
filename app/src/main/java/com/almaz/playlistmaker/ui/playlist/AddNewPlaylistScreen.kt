@@ -1,9 +1,15 @@
 package com.almaz.playlistmaker.ui.playlist
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import android.net.Uri
+import android.os.Build
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -38,21 +46,50 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import coil3.compose.AsyncImage
 import com.almaz.playlistmaker.R
 import com.almaz.playlistmaker.ui.PanelHeader
+import com.almaz.playlistmaker.ui.view_model.AddNewPlaylistViewModel
 import org.w3c.dom.Text
+import java.io.File
 
 @Composable
 fun AddNewPlaylistScreen(
     onBack: () -> Unit,
-    onCreateClicked: (String, String) -> Unit,
+    addPlaylistViewModel: AddNewPlaylistViewModel,
 ) {
+
     val context = LocalContext.current
+
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
     val isFormEmpty by remember (name) {
         derivedStateOf { name.isNotBlank() }
+    }
+    val coverImageUri by addPlaylistViewModel.coverImageUri.collectAsState()
+
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+
+        uri ?: return@rememberLauncherForActivityResult
+
+        val localPath = saveImageToInternalStorage(
+            context = context,
+            sourceUri = uri
+        )
+
+        addPlaylistViewModel.setCoverImageUri(localPath)
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            imagePickerLauncher.launch("image/*")
+        }
     }
 
     Column(
@@ -64,13 +101,50 @@ fun AddNewPlaylistScreen(
             onBack = onBack
         )
         Box(
-            modifier = Modifier.fillMaxWidth().padding(top = 29.dp, start = 24.dp, end = 24.dp, bottom = 29.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 29.dp, start = 24.dp, end = 24.dp, bottom = 29.dp)
+                .clickable {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        imagePickerLauncher.launch("image/*")
+                    } else {
+                        // Для старых версий Android проверяем разрешение
+                        when {
+                            ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.READ_EXTERNAL_STORAGE
+                            ) == PackageManager.PERMISSION_GRANTED -> {
+                                imagePickerLauncher.launch("image/*")
+                            }
+                            else -> {
+                                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            }
+                        }
+                    }
+                }
         ) {
-            Image(
-                modifier = Modifier.padding(top = 103.dp, start = 106.dp, end = 106.dp, bottom = 109.dp),
-                painter = painterResource(R.drawable.add_photo),
-                contentDescription = null,
-            )
+            if (coverImageUri != null) {
+                // Показываем выбранное изображение
+                AsyncImage(
+                    model = File(coverImageUri.toString()),
+                    contentDescription = null,
+                    modifier = Modifier.padding(top = 103.dp, start = 106.dp, end = 106.dp, bottom = 109.dp),
+
+                )
+            } else {
+                // Показываем плейсхолдер
+                Image(
+                    modifier = Modifier.padding(top = 103.dp, start = 106.dp, end = 106.dp, bottom = 109.dp),
+                    painter = painterResource(R.drawable.add_photo),
+                    contentDescription = null,
+                )
+                Text(
+                    text = "Выберите обложку",
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
+                )
+            }
+
         }
         OutlinedTextField(
             modifier = Modifier
@@ -123,7 +197,7 @@ fun AddNewPlaylistScreen(
                 .height(44.dp)
                 ,
             onClick = {
-                onCreateClicked(name, description)
+                addPlaylistViewModel.createNewPlaylist(name, description)
                 name = ""
                 description = ""
                 Toast.makeText(context, "Плейлист успешно создан", Toast.LENGTH_SHORT).show()
@@ -139,4 +213,22 @@ fun AddNewPlaylistScreen(
             )
         }
     }
+}
+
+private fun saveImageToInternalStorage(
+    context: Context,
+    sourceUri: Uri
+): String {
+
+    val fileName = "playlist_${System.currentTimeMillis()}.jpg"
+
+    val file = File(context.filesDir, fileName)
+
+    context.contentResolver.openInputStream(sourceUri)?.use { input ->
+        file.outputStream().use { output ->
+            input.copyTo(output)
+        }
+    }
+
+    return file.absolutePath
 }

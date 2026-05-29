@@ -52,6 +52,7 @@ fun PlaylistEntity.toPlaylist(): Playlist {
         id = this.id,
         name = this.name,
         description = this.description,
+        coverImageUri = this.coverImageUri
     )
 }
 fun Playlist.toEntity(): PlaylistEntity {
@@ -59,5 +60,6 @@ fun Playlist.toEntity(): PlaylistEntity {
         id = this.id,
         name = this.name,
         description = this.description,
+        coverImageUri = this.coverImageUri
     )
 }

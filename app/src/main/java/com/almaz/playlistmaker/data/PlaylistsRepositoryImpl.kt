@@ -22,11 +22,12 @@ class PlaylistsRepositoryImpl(
         return dao.getAllPlaylists().map { playlists -> playlists.map { it.toPlaylist() } }
     }
 
-    override suspend fun addNewPlaylist(name: String, description: String) {
+    override suspend fun addNewPlaylist(name: String, description: String, coverImageUri: String?) {
         dao.addNewPlaylist(
             PlaylistEntity(
                 name = name,
                 description = description,
+                coverImageUri = coverImageUri
             )
 
         )

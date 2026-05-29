@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
 class FavoritesScreenViewModel(
-    private val tracksRepository : TracksRepository
+    tracksRepository : TracksRepository
 ): ViewModel() {
 
     val favoriteTracks: StateFlow<List<Track>> =
