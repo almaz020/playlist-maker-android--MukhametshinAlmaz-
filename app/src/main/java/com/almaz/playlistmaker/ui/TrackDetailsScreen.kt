@@ -159,7 +159,7 @@ fun TrackDetailsScreen(
             )
             Text(
                 modifier = Modifier.padding(top = 9.dp, bottom = 8.dp, end = 16.dp),
-                text = trackSource.trackTime ?: "",
+                text = trackSource.trackTime,
                 fontSize = 13.sp,
                 fontFamily = FontFamily(Font(R.font.yandexsanstextregular)),
             )
