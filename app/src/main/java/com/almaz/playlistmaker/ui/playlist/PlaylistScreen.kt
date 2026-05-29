@@ -39,7 +39,6 @@ fun PlaylistScreen(
         .tracks
         .collectAsState(emptyList())
 
-    // считаем общее время
     val totalMinutesRoundedUp: Int = tracks
         .map { track ->
 

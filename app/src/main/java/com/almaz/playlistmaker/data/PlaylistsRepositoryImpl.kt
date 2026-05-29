@@ -27,7 +27,6 @@ class PlaylistsRepositoryImpl(
             PlaylistEntity(
                 name = name,
                 description = description,
-                tracksJson = ""
             )
 
         )

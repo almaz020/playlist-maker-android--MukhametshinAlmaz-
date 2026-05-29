@@ -19,7 +19,7 @@ import com.google.gson.Gson
         PlaylistEntity::class,
     ], version = 1, exportSchema = false
 )
-@TypeConverters(TrackListConverter::class)
+
 abstract class AppDatabase : RoomDatabase() {
     abstract fun TracksDao(): TracksDao
     abstract fun PlaylistsDao(): PlaylistsDao
@@ -52,15 +52,12 @@ fun PlaylistEntity.toPlaylist(): Playlist {
         id = this.id,
         name = this.name,
         description = this.description,
-        tracks = emptyList()
     )
 }
 fun Playlist.toEntity(): PlaylistEntity {
-    val gson = Gson()
     return PlaylistEntity(
         id = this.id,
         name = this.name,
         description = this.description,
-        tracksJson = gson.toJson(this.tracks)
     )
 }

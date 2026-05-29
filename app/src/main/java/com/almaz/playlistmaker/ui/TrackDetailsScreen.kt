@@ -1,5 +1,6 @@
 package com.almaz.playlistmaker.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,6 +56,7 @@ fun TrackDetailsScreen(
     }
 
     val currentTrack by trackFlow.collectAsState(initial = trackSource)
+
 
     var isShowSheet by remember { mutableStateOf(false) }
 
@@ -117,8 +119,15 @@ fun TrackDetailsScreen(
                 containerColor = Color.Transparent,
                 shape = CircleShape,
                 onClick = {
-                    trackDetailsViewModel.updateTrackFavoriteStatus(trackSource)
-                    refreshTrigger++
+                    if (currentTrack?.playlistId?.toInt() == 0 && isFavorite) {
+                        trackDetailsViewModel.deleteTrackById(trackSource.id)
+                        refreshTrigger++
+                    }
+                    else {
+                        trackDetailsViewModel.updateTrackFavoriteStatus(trackSource)
+                        refreshTrigger++
+                    }
+
 
                 },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp)
