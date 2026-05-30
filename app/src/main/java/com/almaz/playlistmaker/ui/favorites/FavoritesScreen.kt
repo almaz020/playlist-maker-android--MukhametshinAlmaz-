@@ -89,7 +89,7 @@ fun FavoritesScreen(
                     items(tracks.size) { index ->
                         TrackListItem(
                             track = tracks[index],
-                            onClick = { }
+                            onLongClick = { favoritesViewModel.deleteTrackFromFavorites(tracks[index].id) }
                         )
                     }
                 }

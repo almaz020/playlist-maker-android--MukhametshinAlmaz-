@@ -123,4 +123,8 @@ class TracksRepositoryImpl(
         dao.deleteTrackFromPlaylist(trackId)
     }
 
+    override suspend fun deleteTrackFromFavorites(id: Long) {
+        dao.deleteTrackFromFavorites(id)
+    }
+
 }

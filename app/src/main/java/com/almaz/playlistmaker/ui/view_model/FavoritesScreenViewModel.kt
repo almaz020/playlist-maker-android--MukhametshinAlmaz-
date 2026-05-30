@@ -7,9 +7,10 @@ import com.almaz.playlistmaker.domain.TracksRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class FavoritesScreenViewModel(
-    tracksRepository : TracksRepository
+    private val tracksRepository : TracksRepository
 ): ViewModel() {
 
     val favoriteTracks: StateFlow<List<Track>> =
@@ -19,4 +20,11 @@ class FavoritesScreenViewModel(
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList()
             )
+
+    fun deleteTrackFromFavorites(id: Long) {
+        viewModelScope.launch {
+            tracksRepository.deleteTrackFromFavorites(id)
+        }
+
+    }
 }

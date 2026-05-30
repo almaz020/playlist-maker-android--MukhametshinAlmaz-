@@ -57,11 +57,9 @@ fun TrackDetailsScreen(
 
     val currentTrack by trackFlow.collectAsState(initial = trackSource)
 
-
     var isShowSheet by remember { mutableStateOf(false) }
 
     val isFavorite = currentTrack?.favorite ?: false
-
 
     val largeArtworkUrl = trackSource.image?.replace("100x100", "600x600")
 
@@ -138,12 +136,23 @@ fun TrackDetailsScreen(
                     tint = if (isFavorite) Color.Red else Color.Unspecified
                 )
             }
-            PlaylistBottomSheet(
-                isShowPanel = isShowSheet,
-                onDismissRequest = { isShowSheet = false },
-                playlistsViewModel = playlistsViewModel,
-                track = currentTrack
-            )
+            if (currentTrack != null) {
+                PlaylistBottomSheet(
+                    isShowPanel = isShowSheet,
+                    onDismissRequest = { isShowSheet = false },
+                    playlistsViewModel = playlistsViewModel,
+                    track = currentTrack
+                )
+            }
+            else {
+                PlaylistBottomSheet(
+                    isShowPanel = isShowSheet,
+                    onDismissRequest = { isShowSheet = false },
+                    playlistsViewModel = playlistsViewModel,
+                    track = trackSource
+                )
+            }
+
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(top = 24.dp),

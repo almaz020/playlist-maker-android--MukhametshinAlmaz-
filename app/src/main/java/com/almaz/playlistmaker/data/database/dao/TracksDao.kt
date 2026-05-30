@@ -44,5 +44,8 @@ interface TracksDao {
 
     @Query("UPDATE tracks SET playlistId = 0 WHERE id = :trackId")
     suspend fun deleteTrackFromPlaylist(trackId: Long)
+
+    @Query("UPDATE tracks SET favorite = 0 WHERE id = :id")
+    suspend fun deleteTrackFromFavorites(id: Long)
 }
 
